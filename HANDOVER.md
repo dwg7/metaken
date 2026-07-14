@@ -600,3 +600,34 @@ PMTiles vector-tile overlay on GSI's own optimized vector basemap (bvmap via
   `viewer/node_modules/`, `viewer/public/*.pmtiles` are gitignored as
   regenerable build intermediates (`just tiles`); only the final
   `docs/map/**` output is committed, same treatment as `docs/index.html`.
+
+**2026-07-15 (continued) — hover metadata panel on the map**
+
+Added per user request: hovering a polygon shows its metadata in the
+top-left panel, first line the feature count, each feature a collapsible
+`<details>`/`<summary>` (native HTML disclosure, not custom JS) so the panel
+stays compact until a specific record is expanded.
+
+- The visible style is outline-only (no fill), but hit-testing the 1px line
+  itself would make hovering the polygon interior do nothing. Added an
+  invisible `survey_extents_hit` fill layer (`fill-opacity: 0`, same
+  source/source-layer) purely as a `queryRenderedFeatures` target.
+- `mousemove` on the map queries that hit layer at the cursor and swaps the
+  panel between an `#intro` block (default) and `#feature-info` (when one or
+  more polygons are under the cursor) -- multiple overlapping records show as
+  a list, each with a swatch colored by `surveyTypeCategory` (same
+  blue/aqua as the line layer) and an expandable field list
+  (fiscal_year/region/category/dataQualityInfo/source_file). Capped at 30
+  shown with a "ほか N件" note past that, to bound panel size in dense areas.
+- `mousemove` alone doesn't fire once the cursor leaves the map canvas
+  entirely (e.g. onto the panel itself); added a `mouseleave` listener on
+  `map.getContainer()` to reset to `#intro`, otherwise the panel would stay
+  stuck on the last-hovered feature.
+- Panel content is built via `createElement`/`textContent`, not `innerHTML`,
+  so `title` text from GSI's XML can never be interpreted as markup.
+- While testing, a hover panel full of titles like "洪水浸水想定区域3Dモデル"
+  and "3D都市モデル_13109_city_2024" looked at first like a bug (wrong
+  layer/wrong data) -- turned out to be genuine: 3D city model (PLATEAU) and
+  flood-hazard-map creation are commissioned and registered as 公共測量 too,
+  so they're legitimately present in GSI's metaindex data. Worth remembering
+  when the data looks unfamiliar: check it's real before assuming a bug.
