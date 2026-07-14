@@ -541,3 +541,62 @@ that describe a mapping deliverable without using one of the listed words (e.g.
 "砂防基盤図作成業務" — "基盤図" isn't in the keyword list, so it fell into 測量メイン
 in a spot-check). Worth a proper precision/recall check against manually-labeled
 examples before leaning on this split for any published conclusion.
+
+**2026-07-15 — survey-extent vector-tile map (docs/map/)**
+
+Added a spatial view of survey coverage per user request: bbox extents as a
+PMTiles vector-tile overlay on GSI's own optimized vector basemap (bvmap via
+`stars.optgeo.org`), styled to mimic `hfu/faceless-cartographer`'s base map.
+
+- `src/metaken/tiles.py`: exports one Polygon-per-record GeoJSON from the CSV's
+  bbox fields (`build_geojson`). Two plausibility filters beyond
+  `validate.py`'s existing Japan-range check turned out to be necessary:
+  - **Area cap at 1 deg².** Left unfiltered, a first tippecanoe run against
+    5,636 features (maxzoom 16) produced a 190MB+ mbtiles. Root cause: a
+    handful of records have a bbox spanning several degrees (one covers
+    lon 136.2–139.9, lat 36.4–38.5 — roughly half of Honshu), almost certainly
+    a data-entry error in the source XML rather than a real survey extent
+    (median extent is ~0.00005 deg²; the area jumps from 0.48 deg² at p99.5 to
+    2–8 deg² for the top ~15 records, a clean natural break). Excluding
+    anything over 1 deg² dropped only 15 of 5,636 records.
+  - Even after that, **maxzoom needed to drop from 16 to 12.** These are plain
+    rectangles, not detailed geometry, so tiling them past the zoom where they
+    already render as several pixels wide just multiplies the same shape into
+    more tiles for no visual gain — a 1 deg² polygon at z16 spans roughly
+    80×80 tiles. z12 cut the mbtiles from 190MB+ to ~8MB (PMTiles: 5.7MB,
+    5,621 features).
+  - At national zoom a few very elongated (high-aspect-ratio) extents still
+    show as long thin streaks across most of Honshu — visually odd, but not
+    necessarily wrong: a real river/route survey (河川測量/路線測量) can
+    legitimately be long and thin, so this wasn't filtered further. Flagging
+    as a known cosmetic issue rather than guessing at an aspect-ratio cutoff.
+- Tiling (`just tiles`): `tippecanoe --drop-smallest-as-needed` -- per user's
+  request that zoom levels be tile-size-driven and larger-area features
+  surface at lower zoom, this is tippecanoe's built-in mechanism for exactly
+  that (drops the smallest-area feature in a tile once it exceeds the size
+  budget, working from low zoom down), rather than a hand-rolled
+  area→minzoom formula. `pmtiles convert` turns the resulting mbtiles into
+  the PMTiles file the viewer reads directly over HTTP range requests.
+- `viewer/`: a small Vite + TypeScript project, structurally copied from
+  `hfu/faceless-cartographer`'s `vite.config.ts` (`vite-plugin-singlefile`,
+  `base: './'`) and `tsconfig.json`, but with the "Map Intent"/LLM layer
+  entirely stripped -- just a MapLibre map. `src/base-style.json` is a
+  **vendored copy** of faceless-cartographer's own base style (bvmap +
+  Mapterhorn terrain + 122 background/foreground layers), same vendoring
+  rationale as faceless-cartographer's own D24 (avoid an unpinned cross-repo
+  build dependency). Builds to `docs/map/` (a subfolder of `docs/`, kept
+  separate from `report.py`'s `docs/index.html` via `emptyOutDir` scoped to
+  just `docs/map/`), linked from both directions
+  (`docs/index.html` → "測量範囲マップを見る", `docs/map/index.html` →
+  "← レポートに戻る"). Line-only styling (no fill), colored by
+  `surveyTypeCategory` (blue = 測量メイン, aqua = 地図メイン, matching the
+  categorical palette already used in the report's bar charts).
+- Local-testing gotcha worth remembering: `python -m http.server` does not
+  support HTTP Range requests, which PMTiles requires for random tile access
+  -- it fails with "Server returned no content-length header..." in the
+  console. `vite preview` (or GitHub Pages itself) serves Range requests
+  correctly; use that for local verification instead.
+- `data/normalized/survey_extents.{geojson,mbtiles,pmtiles}` and
+  `viewer/node_modules/`, `viewer/public/*.pmtiles` are gitignored as
+  regenerable build intermediates (`just tiles`); only the final
+  `docs/map/**` output is committed, same treatment as `docs/index.html`.

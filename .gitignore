@@ -49,6 +49,17 @@ reports/generated/
 # It is committed as the empirical evidence this project produces.
 # See README.md LICENSE section for GSI content terms of use.
 
+# Vector-tile build intermediates (`just tiles`; regenerable from the CSV).
+# The published PMTiles output lives in docs/map/, which is committed --
+# same treatment as the Python-generated docs/index.html.
+data/normalized/survey_extents.geojson
+data/normalized/*.mbtiles
+data/normalized/*.pmtiles
+
+# Node (viewer/) -- npm install / build artifacts
+viewer/node_modules/
+viewer/public/*.pmtiles
+
 # pytest
 .pytest_cache/
 .coverage

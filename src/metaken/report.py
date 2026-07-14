@@ -417,7 +417,7 @@ def generate_html_report(
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: {scope}　·　生成日時: {generated_at}</p>
+  <p class="meta">対象: {scope}　·　生成日時: {generated_at}　·　<a href="map/">測量範囲マップを見る →</a></p>
 
   <section>
     <h2>概要</h2>

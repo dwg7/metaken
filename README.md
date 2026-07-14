@@ -9,7 +9,7 @@ The repository focuses on the actual structure, completeness, consistency, and u
 
 ## STATUS
 
-The fetch → extract → parse → validate → report pipeline is implemented and runnable end to end via `just all`. See [`docs/index.html`](docs/index.html) for the latest generated report and [HANDOVER.md § 20](HANDOVER.md#20-progress-log) for the progress log and pilot findings.
+The fetch → extract → parse → validate → report pipeline is implemented and runnable end to end via `just all`. See [`docs/index.html`](docs/index.html) for the latest generated report (including a [survey-extent vector-tile map](docs/map/index.html), built via `just tiles map-build`) and HANDOVER.md's progress log for pilot findings.
 
 ## SYNOPSIS
 
@@ -260,6 +260,15 @@ just extract
 just parse
 just validate
 just report
+```
+
+Build the survey-extent vector-tile map (requires `tippecanoe` and the
+[`pmtiles`](https://github.com/protomaps/go-pmtiles) CLI, plus Node.js for the
+`viewer/` Vite project):
+
+```bash
+just tiles
+just map-build
 ```
 
 ## PROPOSED JUST COMMANDS
