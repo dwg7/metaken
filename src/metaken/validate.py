@@ -48,20 +48,21 @@ def validate_record(record: Dict[str, Any]) -> List[str]:
         except (ValueError, TypeError):
             issues.append("invalid_dateStamp_format")
 
-    # Coordinate plausibility across all of Japan, not just the mainland:
-    # ~122-154°E, ~20-46°N (Yonaguni to Minamitorishima; Okinotorishima to
-    # northern Hokkaido). An earlier ~130-145°E/30-45°N range was tuned to
-    # Honshu/Hokkaido/Kyushu/Shikoku and silently excluded all of Okinawa
-    # (real coordinates ~122-128°E, ~24-27°N) -- every J-region record with a
-    # bbox was flagged implausible, and tiles.py dropped them from the map
-    # entirely. See HANDOVER.md.
+    # Coordinate plausibility covering Japan's four extremities with a
+    # safety margin, not just the mainland (an earlier ~130-145°E/30-45°N
+    # range was tuned to Honshu/Hokkaido/Kyushu/Shikoku and silently
+    # excluded all of Okinawa -- see HANDOVER.md):
+    #   択捉島カモイワッカ岬 (north) 45.557°N, 148.857°E
+    #   沖ノ鳥島 (south)             20.425°N, 136.082°E
+    #   南鳥島 (east)                24.283°N, 153.987°E
+    #   与那国島 (west)              24.450°N, 122.933°E
     try:
         west = float(record.get("westBoundLongitude", 0))
         east = float(record.get("eastBoundLongitude", 0))
         south = float(record.get("southBoundLatitude", 0))
         north = float(record.get("northBoundLatitude", 0))
 
-        if not (122 <= west <= 154 and 122 <= east <= 154):
+        if not (122 <= west <= 155 and 122 <= east <= 155):
             issues.append("implausible_longitude")
         if not (20 <= south <= 46 and 20 <= north <= 46):
             issues.append("implausible_latitude")

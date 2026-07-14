@@ -735,3 +735,66 @@ Diagnosed by jumping straight to a known Okinawa coordinate
 (`window.__debugMap.jumpTo(...)`, a temporary debug hook removed again after
 use) rather than trying to navigate/drag the map there, which proved
 unreliable for precise verification.
+
+**2026-07-15 (continued) — full coverage audit + a real GSI-side data quality finding**
+
+User asked for a double-check: does the plausibility range definitely cover
+all of Japan's territory (northern territories to Okinotorishima to
+Yonaguni), and does every region/fiscal-year combination actually have data,
+not just Okinawa?
+
+**Range check.** Verified against Japan's four extremities:
+
+| Point | Lat | Lon |
+|---|---|---|
+| 択捉島カモイワッカ岬 (north) | 45.557°N | 148.857°E |
+| 沖ノ鳥島 (south) | 20.425°N | 136.082°E |
+| 南鳥島 (east) | 24.283°N | 153.987°E |
+| 与那国島 (west) | 24.450°N | 122.933°E |
+
+南鳥島 was only 0.013° inside the previous 154°E cap -- too tight a margin.
+Widened `JAPAN_LON_RANGE` to `(122, 155)` in both `tiles.py` and
+`validate.py` (`JAPAN_LAT_RANGE` (20, 46) already had ~0.4° of margin on both
+extremes, left as is). Cross-checked against the actual dataset's raw
+lon/lat extremes (before filtering): the only values beyond the *old* range
+that looked real were `144.04-144.05°E, 45.55-46.35°N` (R06A0186, an
+Abashiri-area survey) and a cluster of Etorofu-adjacent points around
+44-45.5°N -- both now safely inside the widened range. Everything else
+beyond the range (0.0/0.0 placeholders, `173.14°E`, `67.07°N`, `48.73°N`,
+west>east swaps) was confirmed as a genuine data-entry error by inspecting
+the specific records (digit transpositions, duplicated/wrong digits) -- see
+the six examples checked in `R05B0351`, `R06A0186`, `R06A0483`, `R06D0085`,
+`R07A0641B`, `R07D0206B`.
+
+**Coverage audit.** Cross-tabbed CSV record count, has-bbox count, and final
+tile-feature count per region (A-K); all 11 regions present in the tiles
+output with no full-region silent exclusion, and per-region drop-off from
+has-bbox to in-tiles stayed in a normal 3-15% range (a few genuine
+coordinate errors here and there, nothing systematic).
+
+**A real finding, not a pipeline bug: regions B (東北) and E (中部) have a
+severe and escalating rate of zero-byte XML files inside GSI's own ZIP
+archives**, confirmed via `ZipInfo.file_size` directly on the raw zip (same
+method as the original ~11%-zero-byte finding, just broken out per
+region×year this time):
+
+| Region | R05 | R06 | R07 |
+|---|---|---|---|
+| B (東北) | 22% (119/545) | 52% (277/528) | **95% (99/104)** |
+| E (中部) | 37% (191/518) | 93% (446/479) | **100% (90/90)** |
+| all other 9 regions | ~0% | ~0-1% | ~0% |
+
+Every other region stays at essentially 0% across all three years. This
+isn't a general "recent records aren't populated yet" effect (that would
+show up everywhere) -- it's specific to these two regional offices'
+XML-generation/upload process, and it's getting worse over time, not
+better. Worth flagging prominently: for these two regions in particular, a
+"file exists" count overstates real coverage substantially, and R07 numbers
+for B/E specifically are close to meaningless (104 and 90 nominal files,
+almost all empty).
+
+Not something to code around -- it's evidence about the current metadata
+practice, exactly the kind of finding this project exists to surface. Should
+probably get its own tracked metric in the report (zero-byte/corrupt rate by
+region×year) rather than just being buried in validation issue counts;
+flagged to the user, not yet implemented.
