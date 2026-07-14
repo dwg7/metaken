@@ -162,7 +162,32 @@ function renderFeatureInfo(features: MapGeoJSONFeature[]): void {
   infoEl.style.display = 'block';
 }
 
+// The panel floats on top of the map (it's a DOM sibling of #map, not a
+// descendant), so once the pointer is over the panel itself, map mousemove
+// handling must not keep running underneath -- otherwise hovering the panel
+// to read a record flickers it back to the intro state. Freeze panel updates
+// for as long as the pointer is over the panel; the last state just stays put.
+//
+// This can't be done with a mouseleave listener on map.getContainer(): per
+// the DOM spec, mouseleave/mouseenter fire based on DOM ancestry, not screen
+// geometry -- moving onto .panel (a sibling of #map, not a descendant) counts
+// as "leaving" #map even though panel sits entirely inside #map's own
+// on-screen rectangle, and that leave fires *before* panel's own mouseenter
+// sets the guard flag. So map.getContainer()'s mouseleave ran showIntro()
+// unconditionally on every transition onto the panel, before the guard had
+// a chance to engage. Tracking hover state on the panel itself (rather than
+// reacting to the map "losing" the pointer) sidesteps the ordering problem.
+const panelEl = document.querySelector('.panel') as HTMLElement;
+let pointerOverPanel = false;
+panelEl.addEventListener('mouseenter', () => {
+  pointerOverPanel = true;
+});
+panelEl.addEventListener('mouseleave', () => {
+  pointerOverPanel = false;
+});
+
 map.on('mousemove', (e) => {
+  if (pointerOverPanel) return;
   const features = map.queryRenderedFeatures(e.point, { layers: [HIT_LAYER_ID] });
   map.getCanvas().style.cursor = features.length > 0 ? 'pointer' : '';
   if (features.length > 0) {
@@ -172,10 +197,12 @@ map.on('mousemove', (e) => {
   }
 });
 
-// mousemove alone won't fire once the cursor leaves the canvas entirely
-// (e.g. onto the floating panel itself), so the panel would otherwise stay
-// stuck showing the last-hovered feature.
-map.getContainer().addEventListener('mouseleave', () => {
+// mousemove alone won't fire once the cursor leaves the browser viewport
+// entirely, so the panel would otherwise stay stuck showing the
+// last-hovered feature. Listen on the document, not map.getContainer(): the
+// document has no DOM siblings, so this only fires on a genuine viewport
+// exit, not on every transition onto a sibling element like the panel.
+document.documentElement.addEventListener('mouseleave', () => {
   map.getCanvas().style.cursor = '';
   showIntro();
 });

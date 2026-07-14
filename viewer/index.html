@@ -11,7 +11,13 @@
   #map { position: absolute; inset: 0; }
   .panel {
     position: absolute; top: 12px; left: 12px; width: 20rem; max-width: calc(100vw - 24px);
-    max-height: calc(100vh - 24px);
+    /* Fixed footprint (not max-height) on purpose: if the panel's own size
+       reacts to what's hovered, its bottom edge moves under the (stationary)
+       cursor as content changes, which can expose/cover map pixels under the
+       pointer and re-trigger the map's own hover handling -- a feedback loop
+       that reads as the panel flickering. A constant height, scrolling
+       internally, has no boundary left to feed back on. */
+    height: min(60vh, 420px);
     background: rgba(252, 252, 251, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);
     padding: 0.8rem 1rem; font-size: 0.82rem; line-height: 1.5; color: #0b0b0b;

@@ -671,3 +671,33 @@ that part of the original finding holds, just not the "0%" figure.
 Lesson: when a field comes back at a suspiciously round number across an
 entire large dataset (0%, 100%), treat it as a signal to re-check the parser
 against a raw XML sample before writing it up as a finding about the data.
+
+**2026-07-15 (continued) — panel flicker fix**
+
+User-reported bug: hovering the metadata panel itself made it flicker back to
+the intro state, fighting with the map's own hover handling.
+
+Root cause was actually two compounding issues:
+
+1. The panel's footprint changed size between the short intro text and a
+   long feature list. `viewer/index.html`'s `.panel` used `max-height` (a
+   cap on content-driven growth), not a fixed `height` -- switched to a
+   constant `height: min(60vh, 420px)` with the existing `overflow-y: auto`
+   so hovering the panel never changes its own on-screen boundary.
+2. The real bug: `map.getContainer().addEventListener('mouseleave', ...)`
+   (added earlier to reset the panel when the pointer left the map) fires
+   whenever the pointer moves onto *any* DOM element that isn't a descendant
+   of the map container -- per the DOM spec, mouseleave/mouseenter are about
+   DOM ancestry, not screen geometry. Since `.panel` is a sibling of `#map`,
+   not a descendant, moving onto the panel counted as "leaving" the map even
+   though the panel sits entirely inside the map's own on-screen rectangle.
+   That mouseleave fired `showIntro()` *before* the panel's own `mouseenter`
+   had a chance to set the `pointerOverPanel` guard flag (leave-old fires
+   before enter-new in DOM event ordering), so the guard was always one step
+   too late. Fixed by moving that "reset when the pointer truly leaves the
+   page" listener from `map.getContainer()` to `document.documentElement`,
+   which has no DOM siblings to false-trigger against.
+
+Diagnosed by temporarily exposing a `window.__debugLog` array logging every
+map `mousemove` and panel `mouseenter`/`mouseleave` event, which showed the
+exact ordering problem directly rather than guessing from screenshots.
