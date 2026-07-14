@@ -11,28 +11,24 @@ from lxml import etree
 
 logger = logging.getLogger(__name__)
 
-# JMP 2.0 XML namespace
-JMP_NS = {
-    "gmd": "http://www.isotc211.org/2005/gmd",
-    "gco": "http://www.isotc211.org/2005/gco",
-    "gsr": "http://www.isotc211.org/2005/gsr",
-    "gss": "http://www.isotc211.org/2005/gss",
-}
+# GSI JMP namespace (custom)
+GSI_NS = "http://zgate.gsi.go.jp/ch/jmp/"
 
 
-def extract_text(elem: Optional[etree._Element]) -> str:
-    """Extract text from an element, handling gco:CharacterString."""
+def extract_text(elem: Optional[etree._Element], ns: str = GSI_NS) -> str:
+    """Extract text from an element."""
     if elem is None:
         return ""
     text = (elem.text or "").strip()
-    if not text:
-        char_string = elem.find(".//gco:CharacterString", JMP_NS)
-        if char_string is not None:
-            text = (char_string.text or "").strip()
+    if not text and elem.tag.endswith("language"):
+        # Handle language isoCode
+        iso_code = elem.find(f"{{{ns}}}isoCode")
+        if iso_code is not None:
+            text = (iso_code.text or "").strip()
     return text
 
 
-def parse_xml_file(xml_path: Path) -> Dict[str, Any]:
+def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
     """Parse a single JMP 2.0 XML file into a record."""
     record: Dict[str, Any] = {
         "source_file": xml_path.name,
@@ -41,129 +37,89 @@ def parse_xml_file(xml_path: Path) -> Dict[str, Any]:
     }
 
     try:
-        tree = etree.parse(str(xml_path))
+        tree = etree.parse(str(xml_path), etree.XMLParser(recover=True))
         root = tree.getroot()
 
-        # Extract fiscal year and region from filename (e.g., R07A0020.xml)
+        # Extract fiscal year and region from filename
         name = xml_path.stem
         if len(name) >= 4:
-            record["fiscal_year"] = name[:3]  # R07, R06, etc.
+            record["fiscal_year"] = name[:3]
             record["region_code"] = name[3] if len(name) > 3 else ""
 
-        # File identifier
-        file_id = root.find(".//gmd:fileIdentifier/gco:CharacterString", JMP_NS)
-        record["fileIdentifier"] = extract_text(file_id)
+        # Create namespace map for searching
+        def find_elem(path: str) -> Optional[etree._Element]:
+            return root.find(f".//{{{ns}}}{path}".replace("//", f"//{{{ns}}}"), None)
 
-        # Metadata standard
-        std_name = root.find(
-            ".//gmd:metadataStandardName/gco:CharacterString", JMP_NS
-        )
-        record["metadataStandardName"] = extract_text(std_name)
+        # Title and abstract from identificationInfo
+        title_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}citation//{{{ns}}}title")
+        record["title"] = extract_text(title_elem, ns)
 
-        std_version = root.find(
-            ".//gmd:metadataStandardVersion/gco:CharacterString", JMP_NS
-        )
-        record["metadataStandardVersion"] = extract_text(std_version)
+        abstract_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}abstract")
+        record["abstract"] = extract_text(abstract_elem, ns)
 
-        # Date stamp
-        date_stamp = root.find(
-            ".//gmd:dateStamp/gco:Date", JMP_NS
-        ) or root.find(".//gmd:dateStamp/gco:DateTime", JMP_NS)
-        record["metadataDateStamp"] = extract_text(date_stamp)
+        # Citation date and type
+        date_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}citation//{{{ns}}}date//{{{ns}}}date")
+        record["citationDate"] = extract_text(date_elem, ns)
 
-        # Title and abstract
-        title = root.find(
-            ".//gmd:title/gco:CharacterString", JMP_NS
-        ) or root.find(".//gmd:identificationInfo//gmd:citation//gmd:title/gco:CharacterString", JMP_NS)
-        record["title"] = extract_text(title)
+        date_type_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}citation//{{{ns}}}date//{{{ns}}}dateType")
+        record["dateType"] = (date_type_elem.text or "") if date_type_elem is not None else ""
 
-        abstract = root.find(
-            ".//gmd:abstract/gco:CharacterString", JMP_NS
-        ) or root.find(".//gmd:identificationInfo//gmd:abstract/gco:CharacterString", JMP_NS)
-        record["abstract"] = extract_text(abstract)
+        # Topic category, character set, language, hierarchy level
+        topic_elem = root.find(f".//{{{ns}}}topicCategory")
+        record["topicCategory"] = (topic_elem.text or "") if topic_elem is not None else ""
 
-        # Citation date
-        citation_date = root.find(
-            ".//gmd:citation//gmd:date/gmd:CI_Date/gmd:date/gco:Date", JMP_NS
-        ) or root.find(".//gmd:citation//gmd:date/gmd:CI_Date/gmd:date/gco:DateTime", JMP_NS)
-        record["citationDate"] = extract_text(citation_date)
+        char_set_elem = root.find(f".//{{{ns}}}characterSet")
+        record["characterSet"] = (char_set_elem.text or "") if char_set_elem is not None else ""
 
-        citation_type = root.find(
-            ".//gmd:citation//gmd:date/gmd:CI_Date/gmd:dateType/gmd:CI_DateTypeCode",
-            JMP_NS,
-        )
-        record["dateType"] = citation_type.get("codeListValue", "") if citation_type is not None else ""
+        language_elem = root.find(f".//{{{ns}}}language")
+        record["language"] = extract_text(language_elem, ns)
 
-        # Topic category
-        topic = root.find(
-            ".//gmd:topicCategory/gmd:MD_TopicCategoryCode", JMP_NS
-        )
-        record["topicCategory"] = (topic.text or "") if topic is not None else ""
-
-        # Character set and language
-        char_set = root.find(
-            ".//gmd:characterSet/gmd:MD_CharacterSetCode", JMP_NS
-        )
-        record["characterSet"] = char_set.get("codeListValue", "") if char_set is not None else ""
-
-        language = root.find(
-            ".//gmd:language/gco:CharacterString", JMP_NS
-        ) or root.find(".//gmd:language/gmd:LanguageCode", JMP_NS)
-        record["language"] = extract_text(language)
-
-        # Hierarchy level
-        hier_level = root.find(
-            ".//gmd:hierarchyLevel/gmd:MD_ScopeCode", JMP_NS
-        )
-        record["hierarchyLevel"] = hier_level.get("codeListValue", "") if hier_level is not None else ""
+        hier_level_elem = root.find(f".//{{{ns}}}hierarchyLevel")
+        record["hierarchyLevel"] = (hier_level_elem.text or "") if hier_level_elem is not None else ""
 
         # Contact information
-        contact = root.find(
-            ".//gmd:contact//gmd:organisationName/gco:CharacterString", JMP_NS
-        )
-        record["contactOrganisation"] = extract_text(contact)
+        contact_elem = root.find(f".//{{{ns}}}pointOfContact//{{{ns}}}organisationName")
+        record["contactOrganisation"] = extract_text(contact_elem, ns)
 
-        contact_role = root.find(
-            ".//gmd:contact//gmd:role/gmd:CI_RoleCode", JMP_NS
-        )
-        record["contactRole"] = contact_role.get("codeListValue", "") if contact_role is not None else ""
+        contact_role_elem = root.find(f".//{{{ns}}}pointOfContact//{{{ns}}}role")
+        record["contactRole"] = (contact_role_elem.text or "") if contact_role_elem is not None else ""
 
         # Bounding box
-        extent = root.find(".//gmd:extent//gmd:EX_GeographicBoundingBox", JMP_NS)
-        if extent is not None:
-            west = extent.find(".//gmd:westBoundLongitude/gco:Decimal", JMP_NS)
-            east = extent.find(".//gmd:eastBoundLongitude/gco:Decimal", JMP_NS)
-            south = extent.find(".//gmd:southBoundLatitude/gco:Decimal", JMP_NS)
-            north = extent.find(".//gmd:northBoundLatitude/gco:Decimal", JMP_NS)
+        west_elem = root.find(f".//{{{ns}}}westBoundLongitude")
+        east_elem = root.find(f".//{{{ns}}}eastBoundLongitude")
+        south_elem = root.find(f".//{{{ns}}}southBoundLatitude")
+        north_elem = root.find(f".//{{{ns}}}northBoundLatitude")
 
-            record["westBoundLongitude"] = (west.text or "") if west is not None else ""
-            record["eastBoundLongitude"] = (east.text or "") if east is not None else ""
-            record["southBoundLatitude"] = (south.text or "") if south is not None else ""
-            record["northBoundLatitude"] = (north.text or "") if north is not None else ""
-        else:
-            record["westBoundLongitude"] = ""
-            record["eastBoundLongitude"] = ""
-            record["southBoundLatitude"] = ""
-            record["northBoundLatitude"] = ""
+        record["westBoundLongitude"] = (west_elem.text or "") if west_elem is not None else ""
+        record["eastBoundLongitude"] = (east_elem.text or "") if east_elem is not None else ""
+        record["southBoundLatitude"] = (south_elem.text or "") if south_elem is not None else ""
+        record["northBoundLatitude"] = (north_elem.text or "") if north_elem is not None else ""
 
         # CRS
-        crs = root.find(
-            ".//gmd:referenceSystemInfo//gmd:MD_ReferenceSystem//gmd:referenceSystemIdentifier//gmd:code/gco:CharacterString",
-            JMP_NS,
-        )
-        record["coordinateReferenceSystem"] = extract_text(crs)
+        crs_elem = root.find(f".//{{{ns}}}referenceSystemIdentifier")
+        record["coordinateReferenceSystem"] = extract_text(crs_elem, ns)
 
         # Geographic description
-        geo_desc = root.find(
-            ".//gmd:extent//gmd:EX_GeographicDescription//gmd:geographicIdentifier//gmd:code/gco:CharacterString",
-            JMP_NS,
-        )
-        record["geographicDescription"] = extract_text(geo_desc)
+        geo_desc_elem = root.find(f".//{{{ns}}}EX_GeographicDescription//{{{ns}}}geographicIdentifier")
+        record["geographicDescription"] = extract_text(geo_desc_elem, ns)
+
+        # Metadata standard and file identifier
+        std_name_elem = root.find(f".//{{{ns}}}metadataStandardName")
+        record["metadataStandardName"] = extract_text(std_name_elem, ns)
+
+        std_version_elem = root.find(f".//{{{ns}}}metadataStandardVersion")
+        record["metadataStandardVersion"] = extract_text(std_version_elem, ns)
+
+        file_id_elem = root.find(f".//{{{ns}}}fileIdentifier")
+        record["fileIdentifier"] = extract_text(file_id_elem, ns)
+
+        date_stamp_elem = root.find(f".//{{{ns}}}dateStamp")
+        record["metadataDateStamp"] = extract_text(date_stamp_elem, ns)
 
         # Presence checks
-        record["has_dataQualityInfo"] = "Yes" if root.find(".//gmd:dataQualityInfo", JMP_NS) is not None else "No"
-        record["has_distributionInfo"] = "Yes" if root.find(".//gmd:distributionInfo", JMP_NS) is not None else "No"
-        record["has_referenceSystemInfo"] = "Yes" if root.find(".//gmd:referenceSystemInfo", JMP_NS) is not None else "No"
+        record["has_dataQualityInfo"] = "Yes" if root.find(f".//{{{ns}}}dataQualityInfo") is not None else "No"
+        record["has_distributionInfo"] = "Yes" if root.find(f".//{{{ns}}}distributionInfo") is not None else "No"
+        record["has_referenceSystemInfo"] = "Yes" if root.find(f".//{{{ns}}}referenceSystemInfo") is not None else "No"
 
         # Element count
         record["element_count"] = len(root)
