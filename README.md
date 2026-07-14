@@ -7,6 +7,10 @@ The repository focuses on the actual structure, completeness, consistency, and u
 
 国土地理院が公開する公共測量成果等メタデータ XML を収集・解析し、現行の公共測量メタデータが実際にどのような情報を含み、品質表示・検索・再利用・機械処理にどの程度寄与しているかを検証するためのリポジトリです。
 
+## STATUS
+
+The fetch → extract → parse → validate → report pipeline is implemented and runnable end to end via `just all`. See [`docs/index.html`](docs/index.html) for the latest generated report and [HANDOVER.md § 20](HANDOVER.md#20-progress-log) for the progress log and pilot findings.
+
 ## SYNOPSIS
 
 GSI publishes public survey metadata XML files by fiscal year and regional office.

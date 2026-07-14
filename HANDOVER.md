@@ -351,19 +351,19 @@ Suggested first implementation sequence:
 
 ## 14. Near-term tasks
 
-- [ ] Create initial README
-- [ ] Create HANDOVER
-- [ ] Add `justfile`
-- [ ] Add Python package skeleton
-- [ ] Implement downloader for GSI metadata ZIP files
-- [ ] Implement `download-one year region`
-- [ ] Implement ZIP extraction
-- [ ] Parse JMP 2.0 XML files
-- [ ] Normalize key fields to CSV
-- [ ] Compute basic completeness statistics
-- [ ] Detect presence of `dataQualityInfo`
-- [ ] Detect suspicious `dateStamp` values
-- [ ] Produce first report for `R07 A`
+- [x] Create initial README
+- [x] Create HANDOVER
+- [x] Add `justfile`
+- [x] Add Python package skeleton
+- [x] Implement downloader for GSI metadata ZIP files
+- [x] Implement `download-one year region`
+- [x] Implement ZIP extraction
+- [x] Parse JMP 2.0 XML files
+- [x] Normalize key fields to CSV
+- [x] Compute basic completeness statistics
+- [x] Detect presence of `dataQualityInfo`
+- [x] Detect suspicious `dateStamp` values
+- [x] Produce first report for `R07 A`
 
 ## 15. Longer-term tasks
 
@@ -375,7 +375,7 @@ Suggested first implementation sequence:
 - [ ] Resolve code-list values into human-readable labels
 - [ ] Compare XML metadata fields with information available from other public survey records
 - [ ] Explore automatic generation of lightweight metadata labels
-- [ ] Publish generated reports through GitHub Pages
+- [x] Publish generated reports through GitHub Pages (`docs/index.html` generator implemented; GitHub Pages needs to be enabled in repo settings)
 
 ## 16. Institutional posture
 
@@ -421,3 +421,83 @@ Also avoid evaluating individual projects or organizations. The intended level o
 ## 19. One-line summary
 
 `metaken` is empirical infrastructure for testing whether Japanese public survey metadata XML functions as useful metadata or merely as a procedural artifact.
+
+## 20. Progress log
+
+**2026-07-14**
+
+Implemented the full pilot pipeline end to end (`just clean download extract parse validate report`):
+
+- `src/metaken/config.py`: fiscal year list and region-code table, GSI download URL builder.
+- `src/metaken/fetch.py`: downloads ZIP archives from `service.gsi.go.jp`, per year/region or in bulk, skips existing files unless `--force`.
+- `src/metaken/extract.py`: extracts ZIPs into `data/extracted/`.
+- `src/metaken/parse.py`: parses JMP 2.0 XML. Note — GSI's actual XML uses a custom namespace (`http://zgate.gsi.go.jp/ch/jmp/`), not the ISO 19115 `gmd`/`gco` namespaces the field list in §10 implied; the parser was written against the real namespace after inspecting sample files.
+- `src/metaken/validate.py`: required-field, date-plausibility, and Japan-bbox-plausibility checks.
+- `src/metaken/report.py`: Markdown report (`reports/generated/overview.md`, not committed) and a static HTML report (`docs/index.html`, committed, intended for GitHub Pages).
+
+Pilot run on `R07 A` (北海道, FY2025), 717 files:
+
+- title/abstract: 100% present
+- bounding box: 77% present
+- `dataQualityInfo`: 5% present
+- `referenceSystemInfo`: 3% present
+- explicit CRS code: 0% present
+- contact organisation: 96% of files are *missing* it
+
+This matches the preliminary observations in §5 — most files carry the descriptive
+basics (title, abstract, bbox) but quality/lineage/CRS information is rare. The 0%
+explicit-CRS figure for this sample should be treated as provisional until checked
+across more regions/years; it may reflect a real gap in the source data or a field
+this parser has not yet located correctly.
+
+Decision: `data/normalized/*.csv` (parsed fields, including verbatim `title`/`abstract`
+text from GSI's XML) is committed to the repo rather than gitignored, as the empirical
+record this project produces. `data/raw/` and `data/extracted/` (the original ZIPs/XML)
+remain gitignored — redistributing those wholesale is a separate question under GSI's
+content terms of use (see README § LICENSE) that has not been decided.
+
+**2026-07-14 (same day, continued) — full-dataset run**
+
+Ran `just all` across every year/region GSI currently publishes and fixed what it
+surfaced:
+
+- GSI's download index (checked live) only has ZIP links for `R05`/`R06`/`R07`;
+  `config.FISCAL_YEARS` originally listed back to `H31` on the assumption GSI keeps
+  a longer retention window. It doesn't (or not on this page) — trimmed the list to
+  the three years that actually resolve, so `just download` no longer spends 55 of
+  88 requests on 404s. Re-check the source page before re-adding older years.
+- ~11% of XML entries across the full dataset (1,231 of 11,059) are **zero-byte
+  files inside GSI's own ZIP archives** — not a bug in `extract`/`parse`, confirmed
+  by reading `file_size` off the raw zip's `ZipInfo` directly. This is itself an
+  empirical finding about the current practice, not just noise to filter out.
+- One filename (`メタデータ(R06D0254_3level).xml`) doesn't follow the
+  `{year}{region}{seq}` convention; the naive `name[:3]`/`name[3]` slice in
+  `parse.py` silently produced garbage (`fiscal_year="メタデ"`). Replaced with a
+  regex search (`FILENAME_YEAR_REGION`) that finds the pattern anywhere in the
+  filename instead of assuming position 0.
+
+Full-dataset numbers (R05–R07, 11,059 files, 6,510 with a usable title after
+excluding the zero-byte files):
+
+- title/abstract: 89% present (vs. 100% in the R07-A-only pilot — the pilot
+  sample's completeness was not representative; the zero-byte files pull this down)
+- bounding box: 59%
+- `dataQualityInfo`: 5%
+- explicit CRS code: still 0% across all 11,059 files — this now looks like a real
+  gap in the source data rather than a parser miss, though the field has only been
+  checked against one XPath (`referenceSystemIdentifier`)
+
+Added a survey-type breakdown per user request (基準点測量 vs. 地理空間情報を作る測量):
+JMP 2.0 has no structured code list for this distinction (`topicCategory` is 83%
+one single ISO value, `013`/"location", regardless of actual survey type — not
+useful for this split). Implemented as a heuristic in
+`metaken.parse.classify_survey_type`: title contains
+基準点測量/水準測量/三角点測量/多角測量 → 基準点測量, else (non-empty title) →
+地理空間情報を作る測量. Matched against **title only**, not abstract — most surveys
+set a few auxiliary control points regardless of their primary purpose, so an
+abstract-text match over-classified (55% of records) versus a title match (10%).
+Result: 1,060 基準点測量 (10%) vs. 8,745 地理空間情報を作る測量 (79%) vs. 1,254 unknown
+(11%, mostly the zero-byte files). Notably, `dataQualityInfo` presence is 2% for
+基準点測量 vs. 6% for 地理空間情報を作る測量 — a first concrete data point for the
+project's central cost-benefit question, though from one heuristic split and worth
+re-checking once a cleaner classification signal is found.

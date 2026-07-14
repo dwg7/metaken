@@ -37,13 +37,17 @@ env/
 *~
 .DS_Store
 
-# Generated data
+# Downloaded/extracted GSI source files (large, reproducible via `just download` / `just extract`,
+# and redistribution should follow GSI content terms of use)
 data/raw/
 data/extracted/
-data/normalized/
 
-# Generated reports
+# Intermediate markdown reports (superseded by published docs/ report)
 reports/generated/
+
+# NOTE: data/normalized/ (parsed CSV/JSON) is intentionally NOT ignored.
+# It is committed as the empirical evidence this project produces.
+# See README.md LICENSE section for GSI content terms of use.
 
 # pytest
 .pytest_cache/

@@ -7,16 +7,14 @@ from typing import Dict
 # GSI Metadata service base URL
 GSI_METADATA_BASE = "https://service.gsi.go.jp/geolib/contents/screen/geolib/metadata"
 
-# Available fiscal years (most recent first)
+# Fiscal years actually published on https://www.gsi.go.jp/GIS/metaindex.html
+# (checked 2026-07-14: only R05-R07 have download links; earlier years 404).
+# GSI appears to retire older years as new ones are added — update this list
+# by checking the source page rather than assuming a fixed retention window.
 FISCAL_YEARS = [
     "R07",  # FY2025
     "R06",  # FY2024
     "R05",  # FY2023
-    "R04",  # FY2022
-    "R03",  # FY2021
-    "R02",  # FY2020
-    "R01",  # FY2019
-    "H31",  # FY2018
 ]
 
 # Available regions with Japanese names

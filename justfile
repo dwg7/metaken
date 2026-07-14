@@ -1,3 +1,6 @@
+# Run recipes with src/ on PYTHONPATH so `metaken` is importable without a package install
+export PYTHONPATH := justfile_directory() + "/src"
+
 # Show available commands
 default:
     just --list
@@ -11,27 +14,27 @@ clean:
 
 # Download all configured metadata ZIP files
 download:
-    python -m metaken.fetch
+    python3 -m metaken.fetch
 
 # Download a specific fiscal year and region
 download-one year region:
-    python -m metaken.fetch --year {{year}} --region {{region}}
+    python3 -m metaken.fetch --year {{year}} --region {{region}}
 
 # Extract downloaded ZIP files
 extract:
-    python -m metaken.extract
+    python3 -m metaken.extract
 
 # Parse XML files into normalized records
 parse:
-    python -m metaken.parse
+    python3 -m metaken.parse
 
 # Validate normalized metadata
 validate:
-    python -m metaken.validate
+    python3 -m metaken.validate
 
 # Generate reports
 report:
-    python -m metaken.report
+    python3 -m metaken.report
 
 # Full workflow
 all: clean download extract parse validate report

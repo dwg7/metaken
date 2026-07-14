@@ -4,6 +4,7 @@ Parse JMP 2.0 XML metadata files into normalized records.
 
 import csv
 import logging
+import re
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -13,6 +14,30 @@ logger = logging.getLogger(__name__)
 
 # GSI JMP namespace (custom)
 GSI_NS = "http://zgate.gsi.go.jp/ch/jmp/"
+
+# There is no structured code list in JMP 2.0 that distinguishes control-point
+# surveys from surveys that produce geospatial data products (topicCategory and
+# hierarchyLevel do not encode this). Titles follow a public-survey work-naming
+# convention that usually ends with the survey type, e.g. "...３級基準点測量",
+# so a title keyword match is used as a heuristic proxy instead. Matched only
+# against the title (not the abstract): most surveys set a handful of auxiliary
+# control points as a means to an end, and abstract text mentions of "基準点"
+# for that reason are not a reliable signal of the survey's primary purpose.
+SURVEY_TYPE_CONTROL_POINT = re.compile(r"基準点測量|水準測量|三角点測量|多角測量")
+
+# Filenames are normally {fiscal_year}{region}{seq}, e.g. "R07A0001.xml", but a
+# few files in the wild don't follow the convention (e.g. a Japanese-prefixed
+# name). Search for the pattern anywhere rather than slicing blindly by position.
+FILENAME_YEAR_REGION = re.compile(r"(R\d{2}|H\d{2})([A-K])")
+
+
+def classify_survey_type(title: str) -> str:
+    """Heuristic classification: control-point survey vs. geospatial-data survey."""
+    if not title:
+        return "不明（タイトルなし）"
+    if SURVEY_TYPE_CONTROL_POINT.search(title):
+        return "基準点測量"
+    return "地理空間情報を作る測量"
 
 
 def extract_text(elem: Optional[etree._Element], ns: str = GSI_NS) -> str:
@@ -42,9 +67,10 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
 
         # Extract fiscal year and region from filename
         name = xml_path.stem
-        if len(name) >= 4:
-            record["fiscal_year"] = name[:3]
-            record["region_code"] = name[3] if len(name) > 3 else ""
+        match = FILENAME_YEAR_REGION.search(name)
+        if match:
+            record["fiscal_year"] = match.group(1)
+            record["region_code"] = match.group(2)
 
         # Create namespace map for searching
         def find_elem(path: str) -> Optional[etree._Element]:
@@ -56,6 +82,8 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
 
         abstract_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}abstract")
         record["abstract"] = extract_text(abstract_elem, ns)
+
+        record["surveyTypeCategory"] = classify_survey_type(record["title"])
 
         # Citation date and type
         date_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}citation//{{{ns}}}date//{{{ns}}}date")
