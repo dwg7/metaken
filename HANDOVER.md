@@ -373,7 +373,7 @@ Suggested first implementation sequence:
 - [x] Analyze quality statements in detail (Quality Statement Content Analysis section; only 45% of dataQualityInfo-bearing records have an actual quantitative value)
 - [x] Identify template-derived metadata (evaluationMethodDescription top-5 = 57% of occurrences; specification/title much more varied at 13%)
 - [ ] Resolve code-list values into human-readable labels (topicCategory/hierarchyLevel/dateType/role still raw ISO numeric codes in the CSV)
-- [ ] Compare XML metadata fields with information available from other public survey records (data source identified: <https://psgsv4.gsi.go.jp/giaSearch/gsimaps/index.html> "公共測量実施情報" -- plan written, sample validation not yet run; see § "plan: comparing against other public survey records")
+- [x] Compare XML metadata fields with information available from other public survey records (sample validation run against <https://psgsv4.gsi.go.jp/giaSearch/gsimaps/index.html> "公共測量実施情報": B/E zero-byte records are all 審査済み, not unfinished; classify_survey_type agrees 13/18 on a 20-record sample with a real, direction-biased gap -- see § "sample validation against 公共測量実施情報". Full-dataset reconciliation remains future work.)
 - [ ] Explore automatic generation of lightweight metadata labels
 - [x] Publish generated reports through GitHub Pages (live at https://dwg7.github.io/metaken/)
 
@@ -958,3 +958,82 @@ alongside our existing `K 企画部測量指導課`. Worth checking whether any 
 own K-region records should actually be split out as L, or whether L simply
 doesn't appear in the metaindex XML download site's own region list (which
 only ever offered A–K) -- unresolved, flagged for whoever picks this up.
+
+**2026-07-15 (continued) — sample validation against 公共測量実施情報**
+
+Ran the small, rate-conscious sample validation from the plan above (26
+lookups total via the search UI, batched by fiscal_year+region using the
+form's comma-separated 受付番号 field to keep the request count down --
+13 group searches, not 26 individual ones). No CSV downloads performed.
+
+**Finding 1: the B/E zero-byte records are NOT "not yet reviewed."**
+Checked all 6 records in a random sample of the R07/B zero-byte files
+against 進捗状況 (review status): **all 6 show 審査済み (reviewed/complete)**,
+not 未審査/審査中. This rules out the "advisory registered, survey still in
+progress" hypothesis floated when this was first found. The underlying
+survey work is complete and has passed GSI's review -- the metadata XML
+export specifically is what's broken, which points to a technical/process
+issue in that XML generation or ZIP-packaging step for these two regional
+offices, not a timing effect. (One record elsewhere in the broader 20-item
+sample, R05B0119, did show 審査中 -- so the status field itself works and
+does vary; it's only the B/E zero-byte set that's uniformly 審査済み.)
+
+**Finding 2: classify_survey_type (測量メイン/地図メイン) validated at ~72%
+exact agreement on a 20-record sample (13/18 clear-cut; 2 genuinely
+mixed-type records excluded from that ratio), with a real, direction-biased
+gap.** Sampled 10 記録 predicted 測量メイン and 10 predicted 地図メイン
+(random, non-corrupt, spanning R05-R07 and 7 regions), looked up each
+advisory's official 測量種別 code(s), and compared:
+
+| # | record | our call | official 測量種別 | agree? |
+|---|---|---|---|---|
+| 1 | I0805 | 測量メイン | 基準点測量 | ✓ |
+| 2 | I0261 | 地図メイン | 基準点測量+水準測量 | ✗ (false positive) |
+| 3 | I0835 | 地図メイン | 数値図化 | ✓ |
+| 4 | F0087 | 測量メイン | 基準点測量+現地測量(数値地形図作成) | mixed |
+| 5 | A0536 | 測量メイン | 基準点測量 | ✓ |
+| 6 | A0257 | 測量メイン | 基準点測量 | ✓ |
+| 7 | I0392 | 測量メイン | 同時調整/数値図化/数値撮影/水準測量 | ✗ (false negative) |
+| 8 | I0224 | 地図メイン | 同時調整/数値撮影 | ✓ |
+| 9 | A0498 | 測量メイン | 基準点測量 | ✓ |
+| 10 | B0459 | 測量メイン | 数値図化 | ✗ (false negative) |
+| 11 | B0452 | 地図メイン | 同時調整/数値撮影 | ✓ |
+| 12 | B0131 | 測量メイン | 数値地形図データの作成 | ✗ (false negative) |
+| 13 | B0119 | 地図メイン | 航空レーザ測量 | ✓ |
+| 14 | H0074B | 測量メイン | 基準点測量+水準測量 | ✓ |
+| 15 | F0532 | 測量メイン | 写真地図作成/同時調整/数値撮影 | ✗ (false negative) |
+| 16 | D0268 | 地図メイン | 航空レーザ測深測量 | ✓ |
+| 17 | D0177 | 地図メイン | 数値図化/数値地形図データの作成/水準測量 | ✓ |
+| 18 | D0029A | 地図メイン | 基準点測量+現地測量(数値地形図作成) | mixed |
+| 19 | H0118A | 地図メイン | 修正測量/既成図数値化 | ✓ |
+| 20 | C0750 | 地図メイン | 写真地図作成/同時調整/数値撮影 | ✓ |
+
+13 agree, 5 disagree, 2 are genuinely mixed-type advisories (both a survey
+component and a map-production component -- not a case our binary
+classifier can get "right" either way). **Of the 5 disagreements, 4 are the
+same direction: we called it 測量メイン but the official type is a
+map-production activity** (数値図化, 数値地形図データの作成, 写真地図作成 --
+none of which happened to use one of our title/abstract keywords). Only 1
+disagreement ran the other way (I0261: we said 地図メイン, official is pure
+基準点測量+水準測量). **This means our reported 測量メイン:地図メイン split
+(68%:20% of all records, §"CRS extraction..." earlier) is probably biased
+toward undercounting 地図メイン** -- by how much isn't something a 20-record
+sample can responsibly quantify, but the direction is consistent and the
+mechanism is identifiable: F0532's title "高槻市デジタル航空写真撮影業務" uses
+"航空写真", not "空中写真" (the only aerial-photo synonym in
+`SURVEY_TYPE_MAP_PRODUCT`) -- a concrete, fixable keyword gap, not just
+noise. `数値地形図データの作成` and `数値図化` alone (without an explicit
+product word in the free text) are two more recurring misses.
+
+**Not done / explicitly out of scope this round:** no CSV export, no attempt
+to reconcile the full dataset, no change to `classify_survey_type` itself.
+The sample is small (20 + 6) and was chosen to be cheap to look up
+(via the year+region batching), not to be a rigorously representative
+survey -- treat the 72% figure and the false-negative direction as a
+real signal worth acting on, not a precise accuracy measurement. If this is
+worth pursuing further, the next step would be either (a) adding 航空写真 as
+a synonym and a few more terms surfaced here (数値地形図データの作成の作成,
+既成図数値化, 修正測量, 写真地図作成) to `SURVEY_TYPE_MAP_PRODUCT` and
+re-checking against a fresh sample, or (b) a larger, still rate-conscious
+sample (50-100 records) before touching the classifier, to avoid overfitting
+to this specific 20.
