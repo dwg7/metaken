@@ -84,6 +84,7 @@ def build_geojson(
                         "title": row.get("title", ""),
                         "surveyTypeCategory": row.get("surveyTypeCategory", ""),
                         "has_dataQualityInfo": row.get("has_dataQualityInfo", ""),
+                        "coordinateReferenceSystem": row.get("coordinateReferenceSystem", ""),
                     },
                 }
             )

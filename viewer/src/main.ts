@@ -89,6 +89,7 @@ const FIELD_LABELS: Record<string, string> = {
   region_code: '地域',
   surveyTypeCategory: '種別',
   has_dataQualityInfo: '品質情報',
+  coordinateReferenceSystem: 'CRS',
   source_file: 'ファイル'
 };
 const MAX_FEATURES_SHOWN = 30;

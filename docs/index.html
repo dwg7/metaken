@@ -174,7 +174,7 @@
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 20:37 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
+  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 20:55 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
 
   <section>
     <h2>概要</h2>
@@ -188,11 +188,11 @@
         <div class="stat-label">品質情報 (dataQualityInfo) あり</div>
       </div>
       <div class="stat-tile">
-        <div class="stat-value">0%</div>
+        <div class="stat-value">57%</div>
         <div class="stat-label">座標参照系を明示</div>
       </div>
       <div class="stat-tile">
-        <div class="stat-value">11,059</div>
+        <div class="stat-value">10,901</div>
         <div class="stat-label">検証で問題を検出したファイル</div>
       </div>
     </div>
@@ -224,6 +224,13 @@
           <div class="bar-value">6,510 <span class="bar-pct">(59%)</span></div>
         </div>
         <div class="bar-row">
+          <div class="bar-label">座標参照系 (CRS)</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 64.7%; background: var(--bar-color);"></div>
+          </div>
+          <div class="bar-value">6,343 <span class="bar-pct">(57%)</span></div>
+        </div>
+        <div class="bar-row">
           <div class="bar-label">品質情報 (dataQualityInfo)</div>
           <div class="bar-track">
             <div class="bar-fill" style="width: 6.0%; background: var(--bar-color);"></div>
@@ -243,21 +250,35 @@
             <div class="bar-fill" style="width: 4.0%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">390 <span class="bar-pct">(4%)</span></div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">座標参照系 (CRS)</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width: 0.0%; background: var(--bar-color);"></div>
-          </div>
-          <div class="bar-value">0 <span class="bar-pct">(0%)</span></div>
         </div></div>
     <details>
       <summary>表で見る</summary>
       <table class="data-table">
         <thead><tr><th>フィールド</th><th>件数</th><th>割合</th></tr></thead>
-        <tbody><tr><td>タイトル (title)</td><td>9,805</td><td>88.7%</td></tr><tr><td>概要 (abstract)</td><td>9,805</td><td>88.7%</td></tr><tr><td>空間範囲 (bounding box)</td><td>6,510</td><td>58.9%</td></tr><tr><td>品質情報 (dataQualityInfo)</td><td>584</td><td>5.3%</td></tr><tr><td>参照系情報 (referenceSystemInfo)</td><td>502</td><td>4.5%</td></tr><tr><td>流通情報 (distributionInfo)</td><td>390</td><td>3.5%</td></tr><tr><td>座標参照系 (CRS)</td><td>0</td><td>0.0%</td></tr></tbody>
+        <tbody><tr><td>タイトル (title)</td><td>9,805</td><td>88.7%</td></tr><tr><td>概要 (abstract)</td><td>9,805</td><td>88.7%</td></tr><tr><td>空間範囲 (bounding box)</td><td>6,510</td><td>58.9%</td></tr><tr><td>座標参照系 (CRS)</td><td>6,343</td><td>57.4%</td></tr><tr><td>品質情報 (dataQualityInfo)</td><td>584</td><td>5.3%</td></tr><tr><td>参照系情報 (referenceSystemInfo)</td><td>502</td><td>4.5%</td></tr><tr><td>流通情報 (distributionInfo)</td><td>390</td><td>3.5%</td></tr></tbody>
       </table>
     </details>
+  </section>
+
+  <section>
+    <h2>測地系（CRS）の移行</h2>
+    <p class="section-note">
+      2025年頃の JGD2024 移行について、年度別の内訳です（CRSコードが記載されている件のみが対象。
+      全体では 57% の件のみCRSコードを持ちます）。
+    </p>
+    <table class="data-table">
+      <thead><tr><th>年度</th><th>件数(CRSあり)</th><th>JGD2024</th><th>JGD2011</th><th>JGD2000</th><th>TD(旧)</th><th>その他</th></tr></thead>
+      <tbody><tr><td>R05</td><td>2,630</td><td>0%</td><td>97%</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>R06</td><td>2,434</td><td>1%</td><td>96%</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>R07</td><td>1,279</td><td>70%</td><td>27%</td><td>0%</td><td>0%</td><td>1%</td></tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>地域間比較</h2>
+    <p class="section-note">地方測量部・支所（region_code）ごとの充足率と測量メイン比率です。</p>
+    <table class="data-table">
+      <thead><tr><th>地域</th><th>件数</th><th>title</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th><th>測量メイン</th></tr></thead>
+      <tbody><tr><td>北海道 (A)</td><td>2,221</td><td>99%</td><td>77%</td><td>75%</td><td>3%</td><td>83%</td></tr><tr><td>東北 (B)</td><td>681</td><td>99%</td><td>60%</td><td>59%</td><td>20%</td><td>64%</td></tr><tr><td>関東 (C)</td><td>474</td><td>98%</td><td>45%</td><td>44%</td><td>7%</td><td>63%</td></tr><tr><td>北陸 (D)</td><td>948</td><td>100%</td><td>65%</td><td>62%</td><td>1%</td><td>75%</td></tr><tr><td>中部 (E)</td><td>360</td><td>99%</td><td>38%</td><td>36%</td><td>3%</td><td>72%</td></tr><tr><td>近畿 (F)</td><td>1,447</td><td>100%</td><td>61%</td><td>60%</td><td>4%</td><td>72%</td></tr><tr><td>中国 (G)</td><td>802</td><td>99%</td><td>52%</td><td>49%</td><td>4%</td><td>81%</td></tr><tr><td>四国 (H)</td><td>869</td><td>99%</td><td>47%</td><td>45%</td><td>1%</td><td>83%</td></tr><tr><td>九州 (I)</td><td>1,788</td><td>99%</td><td>84%</td><td>83%</td><td>5%</td><td>79%</td></tr><tr><td>沖縄 (J)</td><td>120</td><td>100%</td><td>48%</td><td>48%</td><td>0%</td><td>94%</td></tr><tr><td>企画部 (K)</td><td>118</td><td>100%</td><td>86%</td><td>85%</td><td>66%</td><td>14%</td></tr></tbody>
+    </table>
   </section>
 
   <section>
@@ -293,7 +314,7 @@
         </div></div>
     <table class="data-table">
       <thead><tr><th>種別</th><th>件数</th><th>abstract</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th></tr></thead>
-      <tbody><tr><td>測量メイン</td><td>7,549</td><td>100%</td><td>70%</td><td>0%</td><td>3%</td></tr><tr><td>地図メイン</td><td>2,256</td><td>100%</td><td>53%</td><td>0%</td><td>14%</td></tr><tr><td>不明（記載なし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+      <tbody><tr><td>測量メイン</td><td>7,549</td><td>100%</td><td>70%</td><td>68%</td><td>3%</td></tr><tr><td>地図メイン</td><td>2,256</td><td>100%</td><td>53%</td><td>52%</td><td>14%</td></tr><tr><td>不明（記載なし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
     </table>
   </section>
 
@@ -302,58 +323,58 @@
     <p class="section-note">構造的・整合性チェックで検出された問題の内訳（延べ件数）</p>
     <div class="bars">
         <div class="bar-row">
-          <div class="bar-label">座標参照系の明示なし</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width: 100.0%; background: var(--bar-color);"></div>
-          </div>
-          <div class="bar-value">11,059 <span class="bar-pct">(100%)</span></div>
-        </div>
-        <div class="bar-row">
           <div class="bar-label">連絡先組織名なし</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 95.7%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 100.0%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">10,586 <span class="bar-pct">(96%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">品質情報なし</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 94.7%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 99.0%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">10,475 <span class="bar-pct">(95%)</span></div>
         </div>
         <div class="bar-row">
+          <div class="bar-label">座標参照系の明示なし</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 44.5%; background: var(--bar-color);"></div>
+          </div>
+          <div class="bar-value">4,716 <span class="bar-pct">(43%)</span></div>
+        </div>
+        <div class="bar-row">
           <div class="bar-label">空間範囲なし</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 41.1%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 43.0%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">4,549 <span class="bar-pct">(41%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">タイトルなし</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 11.3%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 11.8%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">1,254 <span class="bar-pct">(11%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">概要なし</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 11.3%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 11.8%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">1,254 <span class="bar-pct">(11%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">経度が日本の範囲外</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 2.5%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 2.7%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">281 <span class="bar-pct">(3%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">緯度が日本の範囲外</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 1.7%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 1.8%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">187 <span class="bar-pct">(2%)</span></div>
         </div>
@@ -368,7 +389,7 @@
       <summary>表で見る</summary>
       <table class="data-table">
         <thead><tr><th>問題種別</th><th>件数</th><th>割合</th></tr></thead>
-        <tbody><tr><td>座標参照系の明示なし</td><td>11,059</td><td>100.0%</td></tr><tr><td>連絡先組織名なし</td><td>10,586</td><td>95.7%</td></tr><tr><td>品質情報なし</td><td>10,475</td><td>94.7%</td></tr><tr><td>空間範囲なし</td><td>4,549</td><td>41.1%</td></tr><tr><td>タイトルなし</td><td>1,254</td><td>11.3%</td></tr><tr><td>概要なし</td><td>1,254</td><td>11.3%</td></tr><tr><td>経度が日本の範囲外</td><td>281</td><td>2.5%</td></tr><tr><td>緯度が日本の範囲外</td><td>187</td><td>1.7%</td></tr><tr><td>dateStamp が不自然に古い</td><td>162</td><td>1.5%</td></tr></tbody>
+        <tbody><tr><td>連絡先組織名なし</td><td>10,586</td><td>95.7%</td></tr><tr><td>品質情報なし</td><td>10,475</td><td>94.7%</td></tr><tr><td>座標参照系の明示なし</td><td>4,716</td><td>42.6%</td></tr><tr><td>空間範囲なし</td><td>4,549</td><td>41.1%</td></tr><tr><td>タイトルなし</td><td>1,254</td><td>11.3%</td></tr><tr><td>概要なし</td><td>1,254</td><td>11.3%</td></tr><tr><td>経度が日本の範囲外</td><td>281</td><td>2.5%</td></tr><tr><td>緯度が日本の範囲外</td><td>187</td><td>1.7%</td></tr><tr><td>dateStamp が不自然に古い</td><td>162</td><td>1.5%</td></tr></tbody>
       </table>
     </details>
   </section>

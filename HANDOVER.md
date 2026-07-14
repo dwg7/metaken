@@ -367,12 +367,12 @@ Suggested first implementation sequence:
 
 ## 15. Longer-term tasks
 
-- [ ] Analyze all available fiscal years
-- [ ] Compare regions
-- [ ] Compare before/after JGD2024 transition
+- [x] Analyze all available fiscal years (R05-R07, all that GSI currently publishes -- see § "full-dataset run")
+- [x] Compare regions (Region Comparison table in both reports; 企画部/K stands out with 66% dataQualityInfo vs 0-20% elsewhere, and only 14% 測量メイン vs 63-94% elsewhere)
+- [x] Compare before/after JGD2024 transition (CRS/JGD2024 Transition table; see § "CRS extraction was a parser bug")
 - [ ] Analyze quality statements in detail
 - [ ] Identify template-derived metadata
-- [ ] Resolve code-list values into human-readable labels
+- [ ] Resolve code-list values into human-readable labels (topicCategory/hierarchyLevel/dateType/role still raw ISO numeric codes in the CSV)
 - [ ] Compare XML metadata fields with information available from other public survey records
 - [ ] Explore automatic generation of lightweight metadata labels
 - [x] Publish generated reports through GitHub Pages (`docs/index.html` generator implemented; GitHub Pages needs to be enabled in repo settings)
@@ -631,3 +631,43 @@ stays compact until a specific record is expanded.
   flood-hazard-map creation are commissioned and registered as 公共測量 too,
   so they're legitimately present in GSI's metaindex data. Worth remembering
   when the data looks unfamiliar: check it's real before assuming a bug.
+
+**2026-07-15 (continued) — CRS extraction was a parser bug, not a data gap**
+
+Correction to the "explicit CRS code: still 0% across all 11,059 files ... this
+now looks like a real gap in the source data" claim made earlier in this log
+(§ "full-dataset run"). It was wrong. While investigating a `dataQualityInfo`
+XML sample for an unrelated task, found the actual CRS declaration sitting a
+few lines away from where I was looking.
+
+Root cause: `parse.py` searched for `.//referenceSystemIdentifier` (the ISO
+19115 `referenceSystemInfo/MD_ReferenceSystem/referenceSystemIdentifier`
+path), an element name that **never occurs** in GSI's actual JMP 2.0 files.
+The real CRS code is a sibling of the bbox fields themselves:
+`EX_GeographicBoundingBox/extentReferenceSystem/code`, e.g. `"JGD2011 /
+(B,L)"`. (A second, unrelated `extentReferenceSystem` also exists inside
+`dataQualityInfo/DQ_DataQuality/scope/extent/EX_CoordinateBoundingBox`, for a
+*different* bounding box in plane-rectangular coordinates -- easy to grab the
+wrong one if not scoped to the same `EX_GeographicBoundingBox` as
+`westBoundLongitude`.) Fixed by scoping the lookup to `west_elem`'s own
+parent element.
+
+Effect: CRS presence jumps from 0% to **57.4%** (6,343/11,059). This unblocks
+HANDOVER §15's "Compare before/after JGD2024 transition" task, which I'd
+otherwise assumed was blocked by an empty field. Added `crs_family`
+(JGD2024/JGD2011/JGD2000/TD/other, from `coordinateReferenceSystem` text) and
+a fiscal-year crosstab to both reports:
+
+| Fiscal year | JGD2024 | JGD2011 |
+|---|---|---|
+| R05 (FY2023) | 0% | 97% |
+| R06 (FY2024) | 1% | 96% |
+| R07 (FY2025) | 70% | 27% |
+
+A clean transition signal -- JGD2024 essentially absent through R06, becoming
+the majority datum in R07. 42.6% of records still have no CRS code at all;
+that part of the original finding holds, just not the "0%" figure.
+
+Lesson: when a field comes back at a suspiciously round number across an
+entire large dataset (0%, 100%), treat it as a signal to re-check the parser
+against a raw XML sample before writing it up as a finding about the data.

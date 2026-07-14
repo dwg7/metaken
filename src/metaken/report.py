@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
+from .config import REGIONS
+
 logger = logging.getLogger(__name__)
 
 
@@ -79,6 +81,43 @@ def compute_survey_type_breakdown(records: List[Dict[str, Any]]) -> Dict[str, Di
     return breakdown
 
 
+def compute_region_breakdown(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+    """Per-region_code counts and field-completeness, for comparing regions."""
+    breakdown: Dict[str, Dict[str, int]] = {}
+    for code in REGIONS:
+        subset = [r for r in records if r.get("region_code") == code]
+        breakdown[code] = {
+            "count": len(subset),
+            "with_title": sum(1 for r in subset if r.get("title")),
+            "with_bbox": sum(
+                1
+                for r in subset
+                if r.get("westBoundLongitude")
+                and r.get("eastBoundLongitude")
+                and r.get("southBoundLatitude")
+                and r.get("northBoundLatitude")
+            ),
+            "with_crs": sum(1 for r in subset if r.get("coordinateReferenceSystem")),
+            "with_dataQualityInfo": sum(1 for r in subset if r.get("has_dataQualityInfo") == "Yes"),
+            "survey_main": sum(1 for r in subset if r.get("surveyTypeCategory") == "測量メイン"),
+        }
+    return breakdown
+
+
+CRS_FAMILIES = ["JGD2024", "JGD2011", "JGD2000", "TD（旧日本測地系）", "その他/不明"]
+
+
+def compute_crs_transition(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+    """crs_family counts per fiscal_year, for tracking the JGD2024 transition."""
+    years = sorted({r.get("fiscal_year", "") for r in records if r.get("fiscal_year")})
+    by_year: Dict[str, Dict[str, int]] = {}
+    for year in years:
+        subset = [r for r in records if r.get("fiscal_year") == year and r.get("crs_family")]
+        by_year[year] = {family: sum(1 for r in subset if r.get("crs_family") == family) for family in CRS_FAMILIES}
+        by_year[year]["_total"] = len(subset)
+    return by_year
+
+
 def generate_overview_report(
     csv_file: Path = Path("data/normalized/metadata_inventory.csv"),
     validation_file: Path = Path("data/normalized/validation_issues.json"),
@@ -93,6 +132,8 @@ def generate_overview_report(
     validation_results = load_validation(validation_file)
     stats = compute_stats(records)
     survey_breakdown = compute_survey_type_breakdown(records)
+    crs_transition = compute_crs_transition(records)
+    region_breakdown = compute_region_breakdown(records)
 
     # Generate report
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -125,6 +166,34 @@ def generate_overview_report(
                 f"| {category} | {b['count']:,} | {100*b['count']//stats['total_files']}% | "
                 f"{100*b['with_abstract']//n}% | {100*b['with_bbox']//n}% | "
                 f"{100*b['with_crs']//n}% | {100*b['with_dataQualityInfo']//n}% |\n"
+            )
+
+        f.write("\n## CRS / JGD2024 Transition\n\n")
+        f.write(
+            "coordinateReferenceSystem, by fiscal year (share of records that have a CRS "
+            "code at all -- 42.6% of all records still have none, see Validation Results).\n\n"
+        )
+        f.write("| Fiscal year | n (with CRS) | JGD2024 | JGD2011 | JGD2000 | TD | other |\n")
+        f.write("|---|---|---|---|---|---|---|\n")
+        for year, counts in crs_transition.items():
+            n = counts["_total"] or 1
+            f.write(
+                f"| {year} | {counts['_total']:,} | "
+                f"{100*counts['JGD2024']//n}% | {100*counts['JGD2011']//n}% | "
+                f"{100*counts['JGD2000']//n}% | {100*counts['TD（旧日本測地系）']//n}% | "
+                f"{100*counts['その他/不明']//n}% |\n"
+            )
+
+        f.write("\n## Region Comparison\n\n")
+        f.write("| Region | Count | title | bbox | CRS | dataQualityInfo | 測量メイン |\n")
+        f.write("|---|---|---|---|---|---|---|\n")
+        for code, name in REGIONS.items():
+            b = region_breakdown[code]
+            n = b["count"] or 1
+            f.write(
+                f"| {name} ({code}) | {b['count']:,} | {100*b['with_title']//n}% | "
+                f"{100*b['with_bbox']//n}% | {100*b['with_crs']//n}% | "
+                f"{100*b['with_dataQualityInfo']//n}% | {100*b['survey_main']//n}% |\n"
             )
 
         if validation_results:
@@ -239,6 +308,28 @@ def generate_html_report(
         f"<td>{100*survey_breakdown[category]['with_crs']//(survey_breakdown[category]['count'] or 1)}%</td>"
         f"<td>{100*survey_breakdown[category]['with_dataQualityInfo']//(survey_breakdown[category]['count'] or 1)}%</td></tr>"
         for category in SURVEY_TYPE_CATEGORIES
+    )
+
+    crs_transition = compute_crs_transition(records)
+    crs_transition_rows = "".join(
+        f"<tr><td>{year}</td><td>{counts['_total']:,}</td>"
+        f"<td>{100*counts['JGD2024']//(counts['_total'] or 1)}%</td>"
+        f"<td>{100*counts['JGD2011']//(counts['_total'] or 1)}%</td>"
+        f"<td>{100*counts['JGD2000']//(counts['_total'] or 1)}%</td>"
+        f"<td>{100*counts['TD（旧日本測地系）']//(counts['_total'] or 1)}%</td>"
+        f"<td>{100*counts['その他/不明']//(counts['_total'] or 1)}%</td></tr>"
+        for year, counts in crs_transition.items()
+    )
+
+    region_breakdown = compute_region_breakdown(records)
+    region_rows = "".join(
+        f"<tr><td>{name} ({code})</td><td>{region_breakdown[code]['count']:,}</td>"
+        f"<td>{100*region_breakdown[code]['with_title']//(region_breakdown[code]['count'] or 1)}%</td>"
+        f"<td>{100*region_breakdown[code]['with_bbox']//(region_breakdown[code]['count'] or 1)}%</td>"
+        f"<td>{100*region_breakdown[code]['with_crs']//(region_breakdown[code]['count'] or 1)}%</td>"
+        f"<td>{100*region_breakdown[code]['with_dataQualityInfo']//(region_breakdown[code]['count'] or 1)}%</td>"
+        f"<td>{100*region_breakdown[code]['survey_main']//(region_breakdown[code]['count'] or 1)}%</td></tr>"
+        for code, name in REGIONS.items()
     )
 
     html = f"""<!doctype html>
@@ -452,6 +543,27 @@ def generate_html_report(
         <tbody>{_table_rows(completeness_items, total)}</tbody>
       </table>
     </details>
+  </section>
+
+  <section>
+    <h2>測地系（CRS）の移行</h2>
+    <p class="section-note">
+      2025年頃の JGD2024 移行について、年度別の内訳です（CRSコードが記載されている件のみが対象。
+      全体では {100*stats['with_crs']//total}% の件のみCRSコードを持ちます）。
+    </p>
+    <table class="data-table">
+      <thead><tr><th>年度</th><th>件数(CRSあり)</th><th>JGD2024</th><th>JGD2011</th><th>JGD2000</th><th>TD(旧)</th><th>その他</th></tr></thead>
+      <tbody>{crs_transition_rows}</tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>地域間比較</h2>
+    <p class="section-note">地方測量部・支所（region_code）ごとの充足率と測量メイン比率です。</p>
+    <table class="data-table">
+      <thead><tr><th>地域</th><th>件数</th><th>title</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th><th>測量メイン</th></tr></thead>
+      <tbody>{region_rows}</tbody>
+    </table>
   </section>
 
   <section>

@@ -36,6 +36,22 @@ SURVEY_TYPE_MAP_PRODUCT = re.compile(
 FILENAME_YEAR_REGION = re.compile(r"(R\d{2}|H\d{2})([A-K])")
 
 
+def classify_crs_family(crs_code: str) -> str:
+    """Coarse geodetic-datum family from a coordinateReferenceSystem code string
+    (e.g. "JGD2011 / (B,L)" -> "JGD2011"), for tracking the JGD2024 transition."""
+    if not crs_code:
+        return ""
+    if "JGD2024" in crs_code:
+        return "JGD2024"
+    if "JGD2011" in crs_code:
+        return "JGD2011"
+    if "JGD2000" in crs_code:
+        return "JGD2000"
+    if crs_code.startswith("TD"):
+        return "TD（旧日本測地系）"
+    return "その他/不明"
+
+
 def classify_survey_type(title: str, abstract: str = "") -> str:
     """Heuristic classification: 測量メイン (survey-primary) vs. 地図メイン (map-primary)."""
     text = f"{title}　{abstract}".strip("　")
@@ -129,9 +145,21 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
         record["southBoundLatitude"] = (south_elem.text or "") if south_elem is not None else ""
         record["northBoundLatitude"] = (north_elem.text or "") if north_elem is not None else ""
 
-        # CRS
-        crs_elem = root.find(f".//{{{ns}}}referenceSystemIdentifier")
-        record["coordinateReferenceSystem"] = extract_text(crs_elem, ns)
+        # CRS: GSI's JMP 2.0 does not use the ISO 19115 referenceSystemInfo/
+        # referenceSystemIdentifier path (that element name never occurs in the
+        # actual files). The CRS is instead a sibling of the bbox fields inside
+        # the same EX_GeographicBoundingBox, as extentReferenceSystem/code (e.g.
+        # "JGD2011 / (B,L)") -- scoped to west_elem's own parent so this pairs
+        # with the geographic (lon/lat) bbox specifically, not the separate
+        # plane-rectangular-coordinate bbox that dataQualityInfo's scope/extent
+        # also carries under its own EX_CoordinateBoundingBox/extentReferenceSystem.
+        record["coordinateReferenceSystem"] = ""
+        if west_elem is not None:
+            geo_bbox = west_elem.getparent()
+            if geo_bbox is not None:
+                crs_code_elem = geo_bbox.find(f"{{{ns}}}extentReferenceSystem/{{{ns}}}code")
+                record["coordinateReferenceSystem"] = extract_text(crs_code_elem, ns)
+        record["crs_family"] = classify_crs_family(record["coordinateReferenceSystem"])
 
         # Geographic description
         geo_desc_elem = root.find(f".//{{{ns}}}EX_GeographicDescription//{{{ns}}}geographicIdentifier")
