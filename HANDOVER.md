@@ -373,7 +373,7 @@ Suggested first implementation sequence:
 - [x] Analyze quality statements in detail (Quality Statement Content Analysis section; only 45% of dataQualityInfo-bearing records have an actual quantitative value)
 - [x] Identify template-derived metadata (evaluationMethodDescription top-5 = 57% of occurrences; specification/title much more varied at 13%)
 - [ ] Resolve code-list values into human-readable labels (topicCategory/hierarchyLevel/dateType/role still raw ISO numeric codes in the CSV)
-- [ ] Compare XML metadata fields with information available from other public survey records
+- [ ] Compare XML metadata fields with information available from other public survey records (data source identified: <https://psgsv4.gsi.go.jp/giaSearch/gsimaps/index.html> "公共測量実施情報" -- plan written, sample validation not yet run; see § "plan: comparing against other public survey records")
 - [ ] Explore automatic generation of lightweight metadata labels
 - [x] Publish generated reports through GitHub Pages (live at https://dwg7.github.io/metaken/)
 
@@ -864,3 +864,97 @@ that have `dataQualityInfo` at all, the free-text evaluation-method
 narrative is mostly copy-pasted boilerplate, while the substantive
 quality/lineage content (numbers, lineage) is present in well under half of
 that already-small subset.
+
+**2026-07-15 (continued) — plan: comparing against other public survey records**
+
+User asked to plan HANDOVER §15's last real remaining item -- "compare XML
+metadata fields with information available from other public survey
+records" -- with an explicit "do what's actually doable, don't do what
+isn't" constraint. This is a plan only; nothing below is implemented yet.
+
+**Found a real, matching data source.** GSI runs a separate, public,
+map-based search tool for public survey *registration* records (distinct
+from the metaindex XML download site this project already uses):
+<https://psgsv4.gsi.go.jp/giaSearch/gsimaps/index.html> ("公共測量実施情報").
+This is very likely the "SAPLIS registration information" the project's own
+README/HANDOVER §2 speculated about without having identified a concrete
+source. (A second, older-looking endpoint,
+`psgsv2.gsi.go.jp/kouhyou/Kouhyou_KoukyouSokuryou/Kensaku10.aspx`, turned up
+in search results but was unreachable from this environment -- connection
+refused both via WebFetch and the browser tool. The v4 tool above worked
+fine and appears to be the current version.)
+
+Verified directly (searched 受付年度=2023/測量地域=A/受付番号=25, i.e. our
+`R05A0025*.xml`): the search key maps cleanly onto our filename convention
+(`fiscal_year` → 受付年度 as a Western year, `region_code` → 測量地域 地方測量部
+区分 using the *same* A–K letters our `config.REGIONS` already uses, plus an
+`L 企画部技術管理課` we don't currently have in `REGIONS` -- worth adding even
+independent of this task). The record returned (助言番号 "令5道公第25号",
+計画機関名称 "北海道弟子屈町") carries fields our XML metadata does not have at
+all:
+
+- **測量種別** -- an official, structured survey-type classification
+  (in this example: 写真地図作成（デジタルオルソ）/ 数値図化 / 数値図化（同時調整含む）/
+  数値撮影（デジタル）, i.e. *multiple* values against one advisory number,
+  one per work phase). This is the ground truth our own `測量メイン`/`地図メイン`
+  heuristic (`classify_survey_type`) has never been checked against --
+  directly addresses the "not validated against labeled data" caveat noted
+  earlier in this log.
+- **進捗状況** (progress/review status, e.g. "審査済み" = reviewed/completed).
+  Worth checking directly against the B(東北)/E(中部) zero-byte-file finding:
+  if the zero-byte R07 records for those regions show a status other than
+  審査済み, that would confirm the mechanism (advisory registered, survey not
+  yet complete, XML not yet generated) rather than leaving it as an
+  unexplained regional anomaly.
+- **作業機関名称 / 業者登録番号** (contractor name + registration number,
+  distinct from 計画機関名称/planning org) -- our `contactOrganisation` field
+  only captures one party.
+- **作業量, 等級・縮尺, actual 測量期間 dates** -- quantitative/structural
+  fields with no equivalent in our CSV at all.
+
+**A CSV download button exists on the search-results panel** ("CSVダウンロード").
+Not tested (clicking it would trigger a file download, which needs the
+user's explicit go-ahead per download, not a blanket one). Its existence
+matters for scoping: this is an *intended, supported* feature of the tool
+for exporting search results, not something that would require scraping
+against the grain of the service.
+
+**What's realistically in scope (できること):**
+
+1. Read the tool's actual usage terms before doing anything automated
+   against it. Not done yet -- the help/manual link
+   (`/giaSearch/help/manual`) triggers a file download rather than a page,
+   which this session correctly declined rather than downloading blind.
+2. A **small, rate-conscious spot-check** (a few dozen advisory numbers,
+   not all 11,059): compare official 測量種別 against our heuristic
+   classification for a representative sample, and separately check
+   進捗状況 for a sample of the B/E zero-byte records. This directly produces
+   an accuracy figure for `classify_survey_type` and either confirms or
+   rules out the zero-byte hypothesis above -- both real, bounded
+   deliverables.
+3. *If* (1) confirms it's reasonable and (2) goes well, consider whether a
+   batched per-(fiscal_year, region) query (~33 combinations, using the
+   form's multi-value 受付番号 field or querying by year+region alone if that
+   returns the full set) is an appropriate middle ground -- far fewer
+   requests than one-per-record, but still needs the CSV download step to
+   be something the user explicitly approves each time, not automated
+   end-to-end.
+
+**What's explicitly out of scope for now (できないこと/やらないこと):**
+
+- Bulk automated querying of all 11,059 records against a live,
+  citizen-facing government search tool without first reading and
+  following its terms of use. Not doing this by default regardless of
+  whether it's technically possible.
+- Treating this as a one-time full "sync" of metaken's dataset with the
+  registration database. The realistic next step is the sample-based
+  validation in (2) above, not a full join.
+- Automating the CSV download step itself -- every actual file download
+  stays a per-instance, explicitly-approved action.
+
+Also noted, independent of this task: `config.REGIONS` is missing
+`L 企画部技術管理課`, which the psgsv4 tool lists as a distinct region
+alongside our existing `K 企画部測量指導課`. Worth checking whether any of our
+own K-region records should actually be split out as L, or whether L simply
+doesn't appear in the metaindex XML download site's own region list (which
+only ever offered A–K) -- unresolved, flagged for whoever picks this up.
