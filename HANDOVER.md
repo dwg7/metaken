@@ -370,12 +370,12 @@ Suggested first implementation sequence:
 - [x] Analyze all available fiscal years (R05-R07, all that GSI currently publishes -- see § "full-dataset run")
 - [x] Compare regions (Region Comparison table in both reports; 企画部/K stands out with 66% dataQualityInfo vs 0-20% elsewhere, and only 14% 測量メイン vs 63-94% elsewhere)
 - [x] Compare before/after JGD2024 transition (CRS/JGD2024 Transition table; see § "CRS extraction was a parser bug")
-- [ ] Analyze quality statements in detail
-- [ ] Identify template-derived metadata
+- [x] Analyze quality statements in detail (Quality Statement Content Analysis section; only 45% of dataQualityInfo-bearing records have an actual quantitative value)
+- [x] Identify template-derived metadata (evaluationMethodDescription top-5 = 57% of occurrences; specification/title much more varied at 13%)
 - [ ] Resolve code-list values into human-readable labels (topicCategory/hierarchyLevel/dateType/role still raw ISO numeric codes in the CSV)
 - [ ] Compare XML metadata fields with information available from other public survey records
 - [ ] Explore automatic generation of lightweight metadata labels
-- [x] Publish generated reports through GitHub Pages (`docs/index.html` generator implemented; GitHub Pages needs to be enabled in repo settings)
+- [x] Publish generated reports through GitHub Pages (live at https://dwg7.github.io/metaken/)
 
 ## 16. Institutional posture
 
@@ -821,3 +821,46 @@ buried in a one-off analysis.
   title/bbox/CRS completeness for B (東北, 57%/35%/34%) and E (中部,
   33%/12%/12%) is a direct consequence of the zero-byte rate shown in the
   next section, not a separate metadata-quality problem.
+
+**2026-07-15 (continued) — quality statement content analysis (template detection)**
+
+Implemented the two remaining §15 items together, since they turned out to
+be the same analysis: does the ~5% of records with `dataQualityInfo` contain
+genuinely specific quality information, or mostly boilerplate?
+
+`dataQualityInfo/DQ_DataQuality` structure (ISO 19115-shaped): `scope`
+(already used for the CRS fix), `report/DQ_Element` (evaluationMethodDescription,
+`DQ_ConformanceResult` with specification/title + explanation + pass,
+`DQ_QuantitativeResult` with actual numeric accuracy values), and `lineage/
+LI_Lineage/statement` (free text, structurally a sibling of `report`, not
+part of it).
+
+`parse.py` now extracts (first occurrence per record; report.py does the
+cross-record frequency analysis): `quality_statement_count` (DQ_Element
+count), `quality_evaluationMethodDescription`, `quality_specification_title`,
+`quality_explanation`, `quality_quantitative_result_count`,
+`lineage_statement`.
+
+Findings (`compute_quality_analysis` in `report.py`, new "Quality Statement
+Content Analysis" section in both reports):
+
+- Of the 584 dataQualityInfo-bearing records, only 264 (45%) actually
+  include a quantitative accuracy value, and only 162 (27%) include a
+  lineage statement -- the two field types that would be genuinely specific
+  to one survey. The majority is text-only.
+- `evaluationMethodDescription` is heavily templated: 97 distinct values
+  across 483 non-empty occurrences, but the top 5 alone account for 57% of
+  all occurrences ("製品仕様書に従った適合性評価を行った。" alone is 202 of
+  483 -- 42%).
+- `specification/title` is much more varied (298 distinct / 461 occurrences,
+  top 5 only 13%) -- makes sense, this names the actual spec document used
+  (公共測量作業規程, 3D都市モデル標準製品仕様, etc.), which genuinely differs
+  by project type, unlike the evaluation-method boilerplate.
+- `explanation` sits in between (116 distinct / 460, top 5 = 31%).
+
+This is a fairly direct, evidence-based answer to the project's central
+question for the quality-info fields specifically: even within the rare 5%
+that have `dataQualityInfo` at all, the free-text evaluation-method
+narrative is mostly copy-pasted boilerplate, while the substantive
+quality/lineage content (numbers, lineage) is present in well under half of
+that already-small subset.

@@ -189,9 +189,44 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
         record["metadataDateStamp"] = extract_text(date_stamp_elem, ns)
 
         # Presence checks
-        record["has_dataQualityInfo"] = "Yes" if root.find(f".//{{{ns}}}dataQualityInfo") is not None else "No"
+        dqi_elem = root.find(f".//{{{ns}}}dataQualityInfo")
+        record["has_dataQualityInfo"] = "Yes" if dqi_elem is not None else "No"
         record["has_distributionInfo"] = "Yes" if root.find(f".//{{{ns}}}distributionInfo") is not None else "No"
         record["has_referenceSystemInfo"] = "Yes" if root.find(f".//{{{ns}}}referenceSystemInfo") is not None else "No"
+
+        # Quality statement content (DQ_DataQuality has scope/lineage/report;
+        # only ~5% of records have dataQualityInfo at all -- these fields let
+        # the report distinguish genuinely specific quality text from
+        # boilerplate copied verbatim across records, and check whether the
+        # (rarer still) quantitative accuracy values are actually present.
+        # First occurrence only per record; report.py does the cross-record
+        # frequency analysis that needs the full column.
+        record["quality_statement_count"] = 0
+        record["quality_evaluationMethodDescription"] = ""
+        record["quality_specification_title"] = ""
+        record["quality_explanation"] = ""
+        record["quality_quantitative_result_count"] = 0
+        record["lineage_statement"] = ""
+        if dqi_elem is not None:
+            record["quality_statement_count"] = len(dqi_elem.findall(f".//{{{ns}}}DQ_Element"))
+
+            eval_method_elem = dqi_elem.find(f".//{{{ns}}}evaluationMethodDescription")
+            record["quality_evaluationMethodDescription"] = extract_text(eval_method_elem, ns)
+
+            spec_title_elem = dqi_elem.find(
+                f".//{{{ns}}}DQ_ConformanceResult/{{{ns}}}specification/{{{ns}}}title"
+            )
+            record["quality_specification_title"] = extract_text(spec_title_elem, ns)
+
+            explanation_elem = dqi_elem.find(f".//{{{ns}}}explanation")
+            record["quality_explanation"] = extract_text(explanation_elem, ns)
+
+            record["quality_quantitative_result_count"] = len(
+                dqi_elem.findall(f".//{{{ns}}}DQ_QuantitativeResult//{{{ns}}}otherValue")
+            )
+
+            lineage_elem = dqi_elem.find(f".//{{{ns}}}lineage//{{{ns}}}statement")
+            record["lineage_statement"] = extract_text(lineage_elem, ns)
 
         # Element count
         record["element_count"] = len(root)

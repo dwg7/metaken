@@ -174,7 +174,7 @@
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 21:54 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
+  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 22:12 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
 
   <section>
     <h2>概要</h2>
@@ -292,6 +292,43 @@
     <table class="data-table">
       <thead><tr><th>地域</th><th>R05</th><th>R06</th><th>R07</th></tr></thead>
       <tbody><tr><td>北海道 (A)</td><td>0% (0/689)</td><td>0% (2/817)</td><td>0% (0/717)</td></tr><tr><td>東北 (B)</td><td>21% (119/544)</td><td>52% (277/528)</td><td>95% (99/104)</td></tr><tr><td>関東 (C)</td><td>0% (0/86)</td><td>0% (1/285)</td><td>0% (0/104)</td></tr><tr><td>北陸 (D)</td><td>0% (0/338)</td><td>0% (0/427)</td><td>0% (0/183)</td></tr><tr><td>中部 (E)</td><td>36% (191/518)</td><td>93% (446/479)</td><td>100% (90/90)</td></tr><tr><td>近畿 (F)</td><td>0% (0/663)</td><td>0% (0/574)</td><td>0% (0/210)</td></tr><tr><td>中国 (G)</td><td>0% (0/352)</td><td>0% (0/400)</td><td>0% (0/50)</td></tr><tr><td>四国 (H)</td><td>0% (0/338)</td><td>0% (1/359)</td><td>0% (0/173)</td></tr><tr><td>九州 (I)</td><td>0% (1/751)</td><td>0% (4/703)</td><td>0% (0/339)</td></tr><tr><td>沖縄 (J)</td><td>0% (0/46)</td><td>0% (0/50)</td><td>0% (0/24)</td></tr><tr><td>企画部 (K)</td><td>0% (0/96)</td><td>0% (0/20)</td><td>0% (0/2)</td></tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>品質情報の内容分析</h2>
+    <p class="section-note">
+      全 11,059 件中 584 件
+      （5%）にのみ dataQualityInfo が存在し、
+      そのうち実際の定量的精度値（DQ_QuantitativeResult）を含むのは
+      264 件
+      （45%）、
+      来歴（lineage）記述を含むのは 162 件
+      （27%）です。
+      以下は自由記述フィールドの上位頻出値 — 同一文言がどれだけ使い回されているかを示します。
+    </p>
+    <h3 style="font-size:15px;margin:20px 0 4px;">evaluationMethodDescription
+      <span class="section-note" style="display:inline;">（97 種類 /
+      483 件中、上位5件で
+      57%）</span></h3>
+    <table class="data-table">
+      <tbody><tr><td>202×</td><td><code>製品仕様書に従った適合性評価を行った。</code></td></tr><tr><td>22×</td><td><code>・欠測率の検査。</code></td></tr><tr><td>21×</td><td><code>3D都市モデル標準製品仕様書第3.1版　データ品質　に従い実施。</code></td></tr><tr><td>15×</td><td><code>欠測率の点検</code></td></tr><tr><td>15×</td><td><code>西宮市公共測量作業規程による品質評価手順に従った「精度管理表」の評価を行った。</code></td></tr></tbody>
+    </table>
+    <h3 style="font-size:15px;margin:20px 0 4px;">specification / title
+      <span class="section-note" style="display:inline;">（298 種類 /
+      461 件中、上位5件で
+      13%）</span></h3>
+    <table class="data-table">
+      <tbody><tr><td>17×</td><td><code>西宮市公共測量作業規程</code></td></tr><tr><td>16×</td><td><code>空間データ製品仕様書</code></td></tr><tr><td>11×</td><td><code>国土交通省公共測量作業規定の準則</code></td></tr><tr><td>9×</td><td><code>国土交通省公共測量作業規定</code></td></tr><tr><td>8×</td><td><code>地理情報標準プロファイル（JPGIS）に準拠したDMデータ製品仕様書（案）</code></td></tr></tbody>
+    </table>
+    <h3 style="font-size:15px;margin:20px 0 4px;">explanation
+      <span class="section-note" style="display:inline;">（116 種類 /
+      460 件中、上位5件で
+      31%）</span></h3>
+    <table class="data-table">
+      <tbody><tr><td>39×</td><td><code>精度管理表により目視による全数検査を実施。誤率0.0％を合格とした。</code></td></tr><tr><td>35×</td><td><code>【C01】インスタンスに与えられた gml:id と同じ gml:id をもつ他のインスタンスがデータ製品内に存在しない。
+【C02】参照データと都市モデルに含まれる各地物のインス…</code></td></tr><tr><td>28×</td><td><code>【C01】インスタンスに与えられた gml:id と同じ gml:id をもつ他のインスタンスがデータ製品内に存在しない。
+【C02】参照データと都市モデルに含まれる各地物のインス…</code></td></tr><tr><td>20×</td><td><code>製品仕様書の評価手順に従った品質評価を行い、誤りが発見された場合は、訂正する。</code></td></tr><tr><td>19×</td><td><code>2次元数値地形図データ集合について、完全性（過剰なデータ・データ漏れ）の割合が0%であること。</code></td></tr></tbody>
     </table>
   </section>
 

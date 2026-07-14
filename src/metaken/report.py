@@ -5,6 +5,7 @@ Generate summary reports from normalized metadata.
 import csv
 import json
 import logging
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
@@ -124,6 +125,42 @@ def compute_zero_byte_matrix(records: List[Dict[str, Any]]) -> Dict[str, Dict[st
     return matrix, years
 
 
+def compute_quality_analysis(records: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """How template-like are the ~5% of records with dataQualityInfo?
+
+    evaluationMethodDescription/specification_title/explanation are free-text
+    fields in principle, but in practice a handful of exact phrases account
+    for a large share of all non-empty values -- this counts that
+    concentration directly rather than asserting it. Also checks whether the
+    (rarer) quantitative accuracy values and lineage statements -- the parts
+    that would actually be specific to one survey -- are present at all.
+    """
+    targets = [r for r in records if r.get("has_dataQualityInfo") == "Yes"]
+    n = len(targets) or 1
+
+    def top_values(field: str, top_n: int = 5) -> Dict[str, Any]:
+        counts = Counter(r[field] for r in targets if r.get(field))
+        total_nonempty = sum(counts.values()) or 1
+        top = counts.most_common(top_n)
+        top_share = sum(c for _, c in top) / total_nonempty
+        return {
+            "distinct": len(counts),
+            "total_nonempty": total_nonempty,
+            "top": top,
+            "top_share": top_share,
+        }
+
+    return {
+        "total_with_dqi": len(targets),
+        "with_quantitative_result": sum(1 for r in targets if int(r.get("quality_quantitative_result_count") or 0) > 0),
+        "with_lineage": sum(1 for r in targets if r.get("lineage_statement")),
+        "avg_statement_count": sum(int(r.get("quality_statement_count") or 0) for r in targets) / n,
+        "evaluationMethodDescription": top_values("quality_evaluationMethodDescription"),
+        "specification_title": top_values("quality_specification_title"),
+        "explanation": top_values("quality_explanation"),
+    }
+
+
 CRS_FAMILIES = ["JGD2024", "JGD2011", "JGD2000", "TD（旧日本測地系）", "その他/不明"]
 
 
@@ -155,6 +192,7 @@ def generate_overview_report(
     crs_transition = compute_crs_transition(records)
     region_breakdown = compute_region_breakdown(records)
     zero_byte_matrix, zero_byte_years = compute_zero_byte_matrix(records)
+    quality_analysis = compute_quality_analysis(records)
 
     # Generate report
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -232,6 +270,33 @@ def generate_overview_report(
                 zero, total = row[year]
                 cells.append(f"{100*zero//total}% ({zero}/{total})" if total else "—")
             f.write(f"| {name} ({code}) | " + " | ".join(cells) + " |\n")
+
+        f.write("\n## Quality Statement Content Analysis\n\n")
+        qa = quality_analysis
+        f.write(
+            f"Of {stats['total_files']:,} records, {qa['total_with_dqi']:,} "
+            f"({100*qa['total_with_dqi']//stats['total_files']}%) have `dataQualityInfo` at all. "
+            f"Of those: {qa['with_quantitative_result']:,} "
+            f"({100*qa['with_quantitative_result']//(qa['total_with_dqi'] or 1)}%) include an actual "
+            f"quantitative accuracy value (DQ_QuantitativeResult); "
+            f"{qa['with_lineage']:,} ({100*qa['with_lineage']//(qa['total_with_dqi'] or 1)}%) include a "
+            f"lineage statement; average {qa['avg_statement_count']:.1f} DQ_Element blocks per record.\n\n"
+        )
+        for field, label in [
+            ("evaluationMethodDescription", "evaluationMethodDescription"),
+            ("specification_title", "specification/title"),
+            ("explanation", "explanation"),
+        ]:
+            fa = qa[field]
+            f.write(f"### {label}\n\n")
+            f.write(
+                f"{fa['distinct']:,} distinct values across {fa['total_nonempty']:,} non-empty "
+                f"occurrences -- top 5 account for {100*fa['top_share']:.0f}% of all occurrences.\n\n"
+            )
+            for text, count in fa["top"]:
+                short = text if len(text) <= 70 else text[:70] + "..."
+                f.write(f"- {count:,}× `{short}`\n")
+            f.write("\n")
 
         if validation_results:
             f.write("\n## Validation Results\n\n")
@@ -382,6 +447,15 @@ def generate_html_report(
         + "</tr>"
         for code, name in REGIONS.items()
     )
+
+    quality_analysis = compute_quality_analysis(records)
+
+    def _quality_field_rows(field_key: str) -> str:
+        fa = quality_analysis[field_key]
+        return "".join(
+            f"<tr><td>{count:,}×</td><td><code>{text if len(text) <= 90 else text[:90] + chr(8230)}</code></td></tr>"
+            for text, count in fa["top"]
+        )
 
     html = f"""<!doctype html>
 <html lang="ja">
@@ -628,6 +702,41 @@ def generate_html_report(
     <table class="data-table">
       <thead><tr><th>地域</th>{zero_byte_header}</tr></thead>
       <tbody>{zero_byte_rows}</tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>品質情報の内容分析</h2>
+    <p class="section-note">
+      全 {stats['total_files']:,} 件中 {quality_analysis['total_with_dqi']:,} 件
+      （{100*quality_analysis['total_with_dqi']//stats['total_files']}%）にのみ dataQualityInfo が存在し、
+      そのうち実際の定量的精度値（DQ_QuantitativeResult）を含むのは
+      {quality_analysis['with_quantitative_result']:,} 件
+      （{100*quality_analysis['with_quantitative_result']//(quality_analysis['total_with_dqi'] or 1)}%）、
+      来歴（lineage）記述を含むのは {quality_analysis['with_lineage']:,} 件
+      （{100*quality_analysis['with_lineage']//(quality_analysis['total_with_dqi'] or 1)}%）です。
+      以下は自由記述フィールドの上位頻出値 — 同一文言がどれだけ使い回されているかを示します。
+    </p>
+    <h3 style="font-size:15px;margin:20px 0 4px;">evaluationMethodDescription
+      <span class="section-note" style="display:inline;">（{quality_analysis['evaluationMethodDescription']['distinct']:,} 種類 /
+      {quality_analysis['evaluationMethodDescription']['total_nonempty']:,} 件中、上位5件で
+      {100*quality_analysis['evaluationMethodDescription']['top_share']:.0f}%）</span></h3>
+    <table class="data-table">
+      <tbody>{_quality_field_rows('evaluationMethodDescription')}</tbody>
+    </table>
+    <h3 style="font-size:15px;margin:20px 0 4px;">specification / title
+      <span class="section-note" style="display:inline;">（{quality_analysis['specification_title']['distinct']:,} 種類 /
+      {quality_analysis['specification_title']['total_nonempty']:,} 件中、上位5件で
+      {100*quality_analysis['specification_title']['top_share']:.0f}%）</span></h3>
+    <table class="data-table">
+      <tbody>{_quality_field_rows('specification_title')}</tbody>
+    </table>
+    <h3 style="font-size:15px;margin:20px 0 4px;">explanation
+      <span class="section-note" style="display:inline;">（{quality_analysis['explanation']['distinct']:,} 種類 /
+      {quality_analysis['explanation']['total_nonempty']:,} 件中、上位5件で
+      {100*quality_analysis['explanation']['top_share']:.0f}%）</span></h3>
+    <table class="data-table">
+      <tbody>{_quality_field_rows('explanation')}</tbody>
     </table>
   </section>
 
