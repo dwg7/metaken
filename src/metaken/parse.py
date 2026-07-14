@@ -77,22 +77,32 @@ def extract_text(elem: Optional[etree._Element], ns: str = GSI_NS) -> str:
 
 def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
     """Parse a single JMP 2.0 XML file into a record."""
+    # Recorded unconditionally (before the parse attempt) so a zero-byte file
+    # -- which fails etree.parse() with "Document is empty" -- is still
+    # distinguishable from a well-formed file that's merely missing fields.
+    # See HANDOVER.md: GSI's own ZIP archives contain a substantial and
+    # region-specific rate of zero-byte XML entries.
+    file_size_bytes = xml_path.stat().st_size
+
     record: Dict[str, Any] = {
         "source_file": xml_path.name,
         "fiscal_year": "",
         "region_code": "",
+        "file_size_bytes": file_size_bytes,
     }
+
+    # Extract fiscal year and region from the filename, not the XML content,
+    # and do it before the parse attempt: a zero-byte file still has a real
+    # filename, and region×year corrupt-file rates (see HANDOVER.md) need
+    # these fields populated even when the XML itself can't be parsed at all.
+    match = FILENAME_YEAR_REGION.search(xml_path.stem)
+    if match:
+        record["fiscal_year"] = match.group(1)
+        record["region_code"] = match.group(2)
 
     try:
         tree = etree.parse(str(xml_path), etree.XMLParser(recover=True))
         root = tree.getroot()
-
-        # Extract fiscal year and region from filename
-        name = xml_path.stem
-        match = FILENAME_YEAR_REGION.search(name)
-        if match:
-            record["fiscal_year"] = match.group(1)
-            record["region_code"] = match.group(2)
 
         # Create namespace map for searching
         def find_elem(path: str) -> Optional[etree._Element]:

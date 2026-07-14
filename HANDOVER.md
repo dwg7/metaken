@@ -798,3 +798,26 @@ practice, exactly the kind of finding this project exists to surface. Should
 probably get its own tracked metric in the report (zero-byte/corrupt rate by
 region×year) rather than just being buried in validation issue counts;
 flagged to the user, not yet implemented.
+
+**2026-07-15 (continued) — zero-byte rate now tracked in the report**
+
+Added the region×fiscal-year zero-byte file rate (see the finding above) as
+its own section in both reports, per user request, rather than leaving it
+buried in a one-off analysis.
+
+- `parse.py`: added `file_size_bytes` (recorded unconditionally, before the
+  parse attempt) so a zero-byte file is distinguishable from a well-formed
+  file that's merely missing fields. Also moved the filename-based
+  `fiscal_year`/`region_code` extraction to *before* the `etree.parse()`
+  attempt -- it was previously inside the `try` block, so a zero-byte file
+  (which fails immediately with "Document is empty") never got its
+  region/year populated, which would have made it impossible to attribute
+  corrupt files to a region×year cell at all. This is a real fix, not just
+  plumbing for the new report section: every zero-byte record now correctly
+  carries its region/year in the CSV.
+- `report.py`: `compute_zero_byte_matrix()`, a new section in both the
+  Markdown and HTML reports, right after Region Comparison. Reading the two
+  tables together tells the story directly -- Region Comparison's low
+  title/bbox/CRS completeness for B (東北, 57%/35%/34%) and E (中部,
+  33%/12%/12%) is a direct consequence of the zero-byte rate shown in the
+  next section, not a separate metadata-quality problem.

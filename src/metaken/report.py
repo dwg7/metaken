@@ -104,6 +104,26 @@ def compute_region_breakdown(records: List[Dict[str, Any]]) -> Dict[str, Dict[st
     return breakdown
 
 
+def compute_zero_byte_matrix(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    """Zero-byte (corrupt/empty) file rate per region x fiscal_year.
+
+    A "file exists" count overstates real coverage where this rate is high --
+    see HANDOVER.md: regions B (東北) and E (中部) have a severe and
+    escalating zero-byte rate (up to 95-100% by R07) that every other region
+    does not share, discovered while auditing full data coverage.
+    """
+    years = sorted({r.get("fiscal_year", "") for r in records if r.get("fiscal_year")})
+    matrix: Dict[str, Dict[str, Any]] = {}
+    for code in REGIONS:
+        row: Dict[str, Any] = {}
+        for year in years:
+            subset = [r for r in records if r.get("region_code") == code and r.get("fiscal_year") == year]
+            zero = sum(1 for r in subset if r.get("file_size_bytes") == "0")
+            row[year] = (zero, len(subset))
+        matrix[code] = row
+    return matrix, years
+
+
 CRS_FAMILIES = ["JGD2024", "JGD2011", "JGD2000", "TD（旧日本測地系）", "その他/不明"]
 
 
@@ -134,6 +154,7 @@ def generate_overview_report(
     survey_breakdown = compute_survey_type_breakdown(records)
     crs_transition = compute_crs_transition(records)
     region_breakdown = compute_region_breakdown(records)
+    zero_byte_matrix, zero_byte_years = compute_zero_byte_matrix(records)
 
     # Generate report
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -195,6 +216,22 @@ def generate_overview_report(
                 f"{100*b['with_bbox']//n}% | {100*b['with_crs']//n}% | "
                 f"{100*b['with_dataQualityInfo']//n}% | {100*b['survey_main']//n}% |\n"
             )
+
+        f.write("\n## Zero-Byte File Rate by Region and Fiscal Year\n\n")
+        f.write(
+            "Share of XML entries that are zero-byte *inside GSI's own ZIP archives* "
+            "(not a parsing artifact -- verified against `ZipInfo.file_size`). A \"file "
+            "exists\" count overstates real coverage where this is high.\n\n"
+        )
+        f.write("| Region | " + " | ".join(zero_byte_years) + " |\n")
+        f.write("|---|" + "---|" * len(zero_byte_years) + "\n")
+        for code, name in REGIONS.items():
+            row = zero_byte_matrix[code]
+            cells = []
+            for year in zero_byte_years:
+                zero, total = row[year]
+                cells.append(f"{100*zero//total}% ({zero}/{total})" if total else "—")
+            f.write(f"| {name} ({code}) | " + " | ".join(cells) + " |\n")
 
         if validation_results:
             f.write("\n## Validation Results\n\n")
@@ -329,6 +366,20 @@ def generate_html_report(
         f"<td>{100*region_breakdown[code]['with_crs']//(region_breakdown[code]['count'] or 1)}%</td>"
         f"<td>{100*region_breakdown[code]['with_dataQualityInfo']//(region_breakdown[code]['count'] or 1)}%</td>"
         f"<td>{100*region_breakdown[code]['survey_main']//(region_breakdown[code]['count'] or 1)}%</td></tr>"
+        for code, name in REGIONS.items()
+    )
+
+    zero_byte_matrix, zero_byte_years = compute_zero_byte_matrix(records)
+    zero_byte_header = "".join(f"<th>{y}</th>" for y in zero_byte_years)
+    zero_byte_rows = "".join(
+        f"<tr><td>{name} ({code})</td>"
+        + "".join(
+            f"<td>{100*zero_byte_matrix[code][y][0]//zero_byte_matrix[code][y][1]}% "
+            f"({zero_byte_matrix[code][y][0]}/{zero_byte_matrix[code][y][1]})</td>"
+            if zero_byte_matrix[code][y][1] else "<td>—</td>"
+            for y in zero_byte_years
+        )
+        + "</tr>"
         for code, name in REGIONS.items()
     )
 
@@ -563,6 +614,20 @@ def generate_html_report(
     <table class="data-table">
       <thead><tr><th>地域</th><th>件数</th><th>title</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th><th>測量メイン</th></tr></thead>
       <tbody>{region_rows}</tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>0バイトファイル率（地域×年度）</h2>
+    <p class="section-note">
+      GSI が配布する ZIP アーカイブ自体に含まれる0バイト XML エントリの割合です（パース処理の不具合ではなく、
+      <code>ZipInfo.file_size</code> で直接確認済み）。この割合が高い地域では「ファイルが存在する」件数が
+      実質的なカバレッジを過大に見せています。東北（B）・中部（E）の2地域だけ突出して高く、
+      年度を追うごとに悪化しています。
+    </p>
+    <table class="data-table">
+      <thead><tr><th>地域</th>{zero_byte_header}</tr></thead>
+      <tbody>{zero_byte_rows}</tbody>
     </table>
   </section>
 

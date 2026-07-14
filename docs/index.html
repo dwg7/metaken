@@ -174,7 +174,7 @@
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 21:42 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
+  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 21:54 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
 
   <section>
     <h2>概要</h2>
@@ -277,7 +277,21 @@
     <p class="section-note">地方測量部・支所（region_code）ごとの充足率と測量メイン比率です。</p>
     <table class="data-table">
       <thead><tr><th>地域</th><th>件数</th><th>title</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th><th>測量メイン</th></tr></thead>
-      <tbody><tr><td>北海道 (A)</td><td>2,221</td><td>99%</td><td>77%</td><td>75%</td><td>3%</td><td>83%</td></tr><tr><td>東北 (B)</td><td>681</td><td>99%</td><td>60%</td><td>59%</td><td>20%</td><td>64%</td></tr><tr><td>関東 (C)</td><td>474</td><td>98%</td><td>45%</td><td>44%</td><td>7%</td><td>63%</td></tr><tr><td>北陸 (D)</td><td>948</td><td>100%</td><td>65%</td><td>62%</td><td>1%</td><td>75%</td></tr><tr><td>中部 (E)</td><td>360</td><td>99%</td><td>38%</td><td>36%</td><td>3%</td><td>72%</td></tr><tr><td>近畿 (F)</td><td>1,447</td><td>100%</td><td>61%</td><td>60%</td><td>4%</td><td>72%</td></tr><tr><td>中国 (G)</td><td>802</td><td>99%</td><td>52%</td><td>49%</td><td>4%</td><td>81%</td></tr><tr><td>四国 (H)</td><td>869</td><td>99%</td><td>47%</td><td>45%</td><td>1%</td><td>83%</td></tr><tr><td>九州 (I)</td><td>1,788</td><td>99%</td><td>84%</td><td>83%</td><td>5%</td><td>79%</td></tr><tr><td>沖縄 (J)</td><td>120</td><td>100%</td><td>48%</td><td>48%</td><td>0%</td><td>94%</td></tr><tr><td>企画部 (K)</td><td>118</td><td>100%</td><td>86%</td><td>85%</td><td>66%</td><td>14%</td></tr></tbody>
+      <tbody><tr><td>北海道 (A)</td><td>2,223</td><td>99%</td><td>77%</td><td>75%</td><td>3%</td><td>83%</td></tr><tr><td>東北 (B)</td><td>1,176</td><td>57%</td><td>35%</td><td>34%</td><td>11%</td><td>37%</td></tr><tr><td>関東 (C)</td><td>475</td><td>98%</td><td>45%</td><td>44%</td><td>7%</td><td>63%</td></tr><tr><td>北陸 (D)</td><td>948</td><td>100%</td><td>65%</td><td>62%</td><td>1%</td><td>75%</td></tr><tr><td>中部 (E)</td><td>1,087</td><td>33%</td><td>12%</td><td>12%</td><td>1%</td><td>24%</td></tr><tr><td>近畿 (F)</td><td>1,447</td><td>100%</td><td>61%</td><td>60%</td><td>4%</td><td>72%</td></tr><tr><td>中国 (G)</td><td>802</td><td>99%</td><td>52%</td><td>49%</td><td>4%</td><td>81%</td></tr><tr><td>四国 (H)</td><td>870</td><td>98%</td><td>47%</td><td>45%</td><td>1%</td><td>83%</td></tr><tr><td>九州 (I)</td><td>1,793</td><td>99%</td><td>84%</td><td>83%</td><td>5%</td><td>79%</td></tr><tr><td>沖縄 (J)</td><td>120</td><td>100%</td><td>48%</td><td>48%</td><td>0%</td><td>94%</td></tr><tr><td>企画部 (K)</td><td>118</td><td>100%</td><td>86%</td><td>85%</td><td>66%</td><td>14%</td></tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>0バイトファイル率（地域×年度）</h2>
+    <p class="section-note">
+      GSI が配布する ZIP アーカイブ自体に含まれる0バイト XML エントリの割合です（パース処理の不具合ではなく、
+      <code>ZipInfo.file_size</code> で直接確認済み）。この割合が高い地域では「ファイルが存在する」件数が
+      実質的なカバレッジを過大に見せています。東北（B）・中部（E）の2地域だけ突出して高く、
+      年度を追うごとに悪化しています。
+    </p>
+    <table class="data-table">
+      <thead><tr><th>地域</th><th>R05</th><th>R06</th><th>R07</th></tr></thead>
+      <tbody><tr><td>北海道 (A)</td><td>0% (0/689)</td><td>0% (2/817)</td><td>0% (0/717)</td></tr><tr><td>東北 (B)</td><td>21% (119/544)</td><td>52% (277/528)</td><td>95% (99/104)</td></tr><tr><td>関東 (C)</td><td>0% (0/86)</td><td>0% (1/285)</td><td>0% (0/104)</td></tr><tr><td>北陸 (D)</td><td>0% (0/338)</td><td>0% (0/427)</td><td>0% (0/183)</td></tr><tr><td>中部 (E)</td><td>36% (191/518)</td><td>93% (446/479)</td><td>100% (90/90)</td></tr><tr><td>近畿 (F)</td><td>0% (0/663)</td><td>0% (0/574)</td><td>0% (0/210)</td></tr><tr><td>中国 (G)</td><td>0% (0/352)</td><td>0% (0/400)</td><td>0% (0/50)</td></tr><tr><td>四国 (H)</td><td>0% (0/338)</td><td>0% (1/359)</td><td>0% (0/173)</td></tr><tr><td>九州 (I)</td><td>0% (1/751)</td><td>0% (4/703)</td><td>0% (0/339)</td></tr><tr><td>沖縄 (J)</td><td>0% (0/46)</td><td>0% (0/50)</td><td>0% (0/24)</td></tr><tr><td>企画部 (K)</td><td>0% (0/96)</td><td>0% (0/20)</td><td>0% (0/2)</td></tr></tbody>
     </table>
   </section>
 
