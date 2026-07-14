@@ -1,16 +1,16 @@
 {
   "total_records": 11059,
-  "records_with_issues": 10901,
+  "records_with_issues": 10889,
   "issue_counts": {
     "missing_dataQualityInfo": 10475,
     "missing_contact_organisation": 10586,
     "missing_bbox": 4549,
     "missing_crs": 4716,
     "suspicious_old_dateStamp": 162,
-    "implausible_longitude": 281,
-    "implausible_latitude": 187,
+    "implausible_longitude": 28,
     "missing_title": 1254,
-    "missing_abstract": 1254
+    "missing_abstract": 1254,
+    "implausible_latitude": 17
   },
   "issue_details": [
     {
@@ -275,7 +275,6 @@
       "file": "R05A0035.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -551,7 +550,6 @@
     {
       "file": "R05A0078.xml",
       "issues": [
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -731,7 +729,6 @@
       "file": "R05A0107A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -739,7 +736,6 @@
       "file": "R05A0107B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -747,7 +743,6 @@
       "file": "R05A0108A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -755,7 +750,6 @@
       "file": "R05A0108B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -907,7 +901,6 @@
       "file": "R05A0128.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -1479,7 +1472,6 @@
       "file": "R05A0217A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -1487,7 +1479,6 @@
       "file": "R05A0217B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -1495,7 +1486,6 @@
       "file": "R05A0217C.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -1503,7 +1493,6 @@
       "file": "R05A0217D.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -1541,7 +1530,6 @@
       "file": "R05A0222.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -1728,7 +1716,6 @@
       "file": "R05A0248.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -2152,7 +2139,6 @@
       "file": "R05A0305.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -2268,7 +2254,6 @@
     {
       "file": "R05A0321.xml",
       "issues": [
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -2408,7 +2393,6 @@
       "file": "R05A0339.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -2465,7 +2449,6 @@
       "file": "R05A0348.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -2507,7 +2490,6 @@
       "file": "R05A0355.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -2699,8 +2681,7 @@
     {
       "file": "R05A0381.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_latitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -2736,7 +2717,6 @@
       "file": "R05A0388.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -2928,7 +2908,6 @@
       "file": "R05A0418.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -3188,7 +3167,6 @@
       "file": "R05A0451.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -3317,7 +3295,6 @@
       "file": "R05A0469.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -3602,7 +3579,6 @@
       "file": "R05A0509.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -3730,7 +3706,6 @@
       "file": "R05A0525.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -4037,7 +4012,6 @@
       "file": "R05A0572.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -4115,7 +4089,6 @@
       "file": "R05A0582.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -4144,7 +4117,6 @@
       "file": "R05A0587.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -4289,7 +4261,6 @@
       "file": "R05A0609.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -4311,7 +4282,6 @@
       "file": "R05A0613.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -4344,7 +4314,6 @@
       "file": "R05A0617.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -4459,7 +4428,6 @@
       "file": "R05A0631.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -4481,7 +4449,6 @@
       "file": "R05A0634.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -4542,7 +4509,6 @@
       "file": "R05A0642.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -26317,8 +26283,6 @@
       "file": "R05I0016_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -26644,7 +26608,6 @@
       "file": "R05I0071_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -26678,7 +26641,6 @@
       "file": "R05I0077_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27067,7 +27029,6 @@
       "file": "R05I0152_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27283,7 +27244,6 @@
       "file": "R05I0188_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27473,7 +27433,6 @@
       "file": "R05I0215_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27532,7 +27491,6 @@
       "file": "R05I0225_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27598,7 +27556,6 @@
       "file": "R05I0237_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27839,8 +27796,6 @@
       "file": "R05I0280_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -27864,7 +27819,6 @@
       "file": "R05I0286_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27887,12 +27841,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R05I0291_点検済み.xml",
-      "issues": [
-        "implausible_longitude"
       ]
     },
     {
@@ -27957,8 +27905,6 @@
       "file": "R05I0303_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -27973,7 +27919,6 @@
       "file": "R05I0306_修正済.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -27981,15 +27926,13 @@
       "file": "R05I0306_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
     {
       "file": "R05I0307_修正済み.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -28144,7 +28087,6 @@
       "file": "R05I0336_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -28152,8 +28094,6 @@
       "file": "R05I0337_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -28241,8 +28181,6 @@
       "file": "R05I0351_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -28300,8 +28238,6 @@
       "file": "R05I0359_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -28479,8 +28415,6 @@
       "file": "R05I0394_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -28608,7 +28542,6 @@
       "file": "R05I0422_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -28786,7 +28719,6 @@
       "file": "R05I0455_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -28837,7 +28769,6 @@
       "file": "R05I0463_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -28851,7 +28782,6 @@
       "file": "R05I0466_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -28945,7 +28875,6 @@
       "issues": [
         "missing_crs",
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -28967,7 +28896,6 @@
       "file": "R05I0486_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29235,7 +29163,6 @@
       "file": "R05I0527_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29273,7 +29200,6 @@
       "file": "R05I0532_修正済.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29388,7 +29314,6 @@
       "file": "R05I0550_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29476,7 +29401,6 @@
       "file": "R05I0573_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29547,7 +29471,6 @@
       "file": "R05I0579_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29601,8 +29524,6 @@
       "file": "R05I0587_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -29610,7 +29531,6 @@
       "file": "R05I0589_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29696,7 +29616,6 @@
       "file": "R05I0600_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -29857,7 +29776,6 @@
       "file": "R05I0628_修正済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30044,7 +29962,6 @@
       "file": "R05I0659_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30094,12 +30011,6 @@
       ]
     },
     {
-      "file": "R05I0667_確認済み.xml",
-      "issues": [
-        "implausible_longitude"
-      ]
-    },
-    {
       "file": "R05I0668_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
@@ -30119,8 +30030,6 @@
       "file": "R05I0670_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -30128,7 +30037,6 @@
       "file": "R05I0671_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30136,7 +30044,6 @@
       "file": "R05I0672_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30263,7 +30170,6 @@
       "file": "R05I0692_修正済.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30421,7 +30327,6 @@
       "file": "R05I0722_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30466,7 +30371,6 @@
       "file": "R05I0729_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30654,7 +30558,6 @@
       "file": "R05I0763_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30669,7 +30572,6 @@
       "file": "R05I0765_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -30819,8 +30721,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "suspicious_old_dateStamp",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -30886,7 +30786,6 @@
       "file": "R05I0807_修正済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31111,7 +31010,6 @@
       "file": "R05I0848_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31265,7 +31163,6 @@
       "file": "R05I0886_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31273,7 +31170,6 @@
       "file": "R05I0887_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31288,8 +31184,6 @@
       "file": "R05I0890_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31304,7 +31198,6 @@
       "file": "R05I0893_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31312,7 +31205,6 @@
       "file": "R05I0894_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31371,7 +31263,6 @@
       "file": "R05I0907_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31509,7 +31400,6 @@
       "file": "R05I0932_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31523,7 +31413,6 @@
       "file": "R05I0934_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31596,7 +31485,6 @@
       "file": "R05I0948_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -31701,8 +31589,6 @@
       "file": "R05J0002.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31710,8 +31596,6 @@
       "file": "R05J0003.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31728,8 +31612,6 @@
       "file": "R05J0005.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31737,8 +31619,6 @@
       "file": "R05J0006.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31746,8 +31626,6 @@
       "file": "R05J0007.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31755,8 +31633,6 @@
       "file": "R05J0008.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31773,8 +31649,6 @@
       "file": "R05J0011.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31800,8 +31674,6 @@
       "file": "R05J0014.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31809,8 +31681,6 @@
       "file": "R05J0015.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31835,17 +31705,13 @@
     {
       "file": "R05J0018.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
       "file": "R05J0019.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31853,8 +31719,6 @@
       "file": "R05J0020.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31907,8 +31771,6 @@
       "file": "R05J0027.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31916,8 +31778,6 @@
       "file": "R05J0028.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31934,8 +31794,6 @@
       "file": "R05J0031.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31943,7 +31801,6 @@
       "file": "R05J0032.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31951,8 +31808,6 @@
       "file": "R05J0033.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31969,8 +31824,6 @@
       "file": "R05J0036.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -31996,8 +31849,6 @@
       "file": "R05J0040.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32014,8 +31865,6 @@
       "file": "R05J0043.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32023,8 +31872,6 @@
       "file": "R05J0045.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32041,8 +31888,6 @@
       "file": "R05J0048.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32050,8 +31895,6 @@
       "file": "R05J0050.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32059,8 +31902,6 @@
       "file": "R05J0051.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32068,8 +31909,6 @@
       "file": "R05J0052.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32421,7 +32260,6 @@
       "file": "R06A0019.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -32772,7 +32610,6 @@
       "file": "R06A0064A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -32780,7 +32617,6 @@
       "file": "R06A0064B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -32788,7 +32624,6 @@
       "file": "R06A0064C.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33312,7 +33147,6 @@
       "file": "R06A0134.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33470,7 +33304,6 @@
       "file": "R06A0158.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33822,7 +33655,6 @@
       "file": "R06A0221A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33830,7 +33662,6 @@
       "file": "R06A0221B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33838,7 +33669,6 @@
       "file": "R06A0221C.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -33880,7 +33710,6 @@
       "file": "R06A0229.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -33903,18 +33732,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R06A0231A.xml",
-      "issues": [
-        "implausible_latitude"
-      ]
-    },
-    {
-      "file": "R06A0231B.xml",
-      "issues": [
-        "implausible_latitude"
       ]
     },
     {
@@ -34531,7 +34348,6 @@
       "file": "R06A0307.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -34869,7 +34685,6 @@
       "file": "R06A0351.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -35214,7 +35029,6 @@
       "file": "R06A0398.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -35380,7 +35194,6 @@
       "file": "R06A0422.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -35411,7 +35224,6 @@
       "file": "R06A0427.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -35419,7 +35231,6 @@
       "file": "R06A0429.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -35567,7 +35378,6 @@
       "file": "R06A0444.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -35715,7 +35525,6 @@
       "file": "R06A0465.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -35826,7 +35635,6 @@
       "file": "R06A0483.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -36015,7 +35823,6 @@
       "file": "R06A0508.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36186,7 +35993,6 @@
       "file": "R06A0533.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36194,7 +36000,6 @@
       "file": "R06A0534.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36353,7 +36158,6 @@
       "file": "R06A0561.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36695,7 +36499,6 @@
       "file": "R06A0614A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36703,7 +36506,6 @@
       "file": "R06A0614B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -36741,7 +36543,6 @@
       "file": "R06A0623.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -36955,7 +36756,6 @@
       "file": "R06A0662.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -37069,7 +36869,6 @@
       "file": "R06A0679.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -37471,7 +37270,6 @@
       "file": "R06A0748.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -37502,7 +37300,6 @@
       "file": "R06A0754A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -37510,7 +37307,6 @@
       "file": "R06A0754B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -37541,20 +37337,7 @@
       "file": "R06A0758.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R06A0759A.xml",
-      "issues": [
-        "implausible_latitude"
-      ]
-    },
-    {
-      "file": "R06A0759B.xml",
-      "issues": [
-        "implausible_latitude"
       ]
     },
     {
@@ -37607,12 +37390,6 @@
       ]
     },
     {
-      "file": "R06A0773.xml",
-      "issues": [
-        "implausible_latitude"
-      ]
-    },
-    {
       "file": "R06A0775.xml",
       "issues": [
         "missing_dataQualityInfo",
@@ -37624,7 +37401,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "suspicious_old_dateStamp",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -62442,7 +62218,6 @@
       "file": "R06I0011_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -62457,7 +62232,6 @@
       "file": "R06I0013_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -62565,7 +62339,6 @@
       "file": "R06I0038_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -62587,7 +62360,6 @@
       "file": "R06I0042_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -62623,8 +62395,6 @@
       "file": "R06I0048_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -62647,12 +62417,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R06I0055_確認済み.xml",
-      "issues": [
-        "implausible_longitude"
       ]
     },
     {
@@ -62780,8 +62544,6 @@
       "file": "R06I0080_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -62838,8 +62600,6 @@
       "file": "R06I0090_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -62877,8 +62637,6 @@
       "file": "R06I0095_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -62886,8 +62644,6 @@
       "file": "R06I0097_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -62951,7 +62707,6 @@
       "file": "R06I0109_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63019,7 +62774,6 @@
       "file": "R06I0123_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63091,7 +62845,6 @@
       "file": "R06I0136_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63456,7 +63209,6 @@
       "file": "R06I0209_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63464,8 +63216,6 @@
       "file": "R06I0210_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -63512,7 +63262,6 @@
       "file": "R06I0218_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63527,7 +63276,6 @@
       "file": "R06I0220_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63556,7 +63304,6 @@
       "file": "R06I0224_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63595,8 +63342,7 @@
     {
       "file": "R06I0237_点検済み.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -63637,7 +63383,6 @@
       "file": "R06I0242_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63659,7 +63404,6 @@
       "file": "R06I0246_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63674,7 +63418,6 @@
       "file": "R06I0249_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63732,7 +63475,6 @@
       "file": "R06I0262_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63802,7 +63544,6 @@
       "file": "R06I0273_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -63840,9 +63581,7 @@
       "file": "R06I0278_確認済み.xml",
       "issues": [
         "missing_crs",
-        "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -63965,8 +63704,6 @@
       "file": "R06I0301_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -64002,8 +63739,6 @@
       "file": "R06I0309_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -64011,8 +63746,6 @@
       "file": "R06I0310_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -64020,7 +63753,6 @@
       "file": "R06I0312_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64119,7 +63851,6 @@
       "file": "R06I0329_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64183,7 +63914,6 @@
       "file": "R06I0343_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64206,7 +63936,6 @@
       "file": "R06I0350_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64221,7 +63950,6 @@
       "file": "R06I0352_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64236,7 +63964,6 @@
       "file": "R06I0354_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64265,7 +63992,6 @@
       "file": "R06I0359_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64287,7 +64013,6 @@
       "file": "R06I0363_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64303,8 +64028,6 @@
       "file": "R06I0367_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -64361,7 +64084,6 @@
       "file": "R06I0375_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64390,7 +64112,6 @@
       "file": "R06I0379_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64505,8 +64226,6 @@
       "file": "R06I0396_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -64541,7 +64260,6 @@
       "file": "R06I0406_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64579,7 +64297,6 @@
       "file": "R06I0415_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64587,7 +64304,6 @@
       "file": "R06I0417_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64929,7 +64645,6 @@
       "file": "R06I0486_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -64980,7 +64695,6 @@
       "file": "R06I0489_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -65053,8 +64767,6 @@
       "file": "R06I0500_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -65149,7 +64861,6 @@
       "file": "R06I0519_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -65276,7 +64987,6 @@
       "file": "R06I0540_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -65515,7 +65225,6 @@
       "file": "R06I0583_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -65551,8 +65260,6 @@
       "file": "R06I0590_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -65597,7 +65304,6 @@
       "file": "R06I0598_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -65916,7 +65622,6 @@
       "file": "R06I0674_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66186,7 +65891,6 @@
       "file": "R06I0709_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66229,7 +65933,6 @@
       "file": "R06I0719_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66251,7 +65954,6 @@
       "file": "R06I0725_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66428,7 +66130,6 @@
       "file": "R06I0757_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66453,7 +66154,6 @@
       "file": "R06I0764_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66724,7 +66424,6 @@
       "file": "R06I0821_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66873,7 +66572,6 @@
       "file": "R06I0854_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -66981,7 +66679,6 @@
       "file": "R06I0881_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -67116,7 +66813,6 @@
       "file": "R06I0906_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -67175,9 +66871,7 @@
     {
       "file": "R06I0928_確認済み.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -67214,7 +66908,6 @@
       "file": "R06I0937_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -67236,7 +66929,6 @@
       "file": "R06I0943_確認済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -67328,7 +67020,6 @@
       "file": "R06I0967_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -67343,8 +67034,6 @@
       "file": "R06I0973_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67352,8 +67041,6 @@
       "file": "R06I0974_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67429,9 +67116,7 @@
     {
       "file": "R06J0006.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -67456,8 +67141,6 @@
       "file": "R06J0009.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67465,8 +67148,6 @@
       "file": "R06J0010.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67492,8 +67173,6 @@
       "file": "R06J0013.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67501,8 +67180,6 @@
       "file": "R06J0014.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67519,8 +67196,6 @@
       "file": "R06J0017.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67546,8 +67221,6 @@
       "file": "R06J0020.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67573,8 +67246,6 @@
       "file": "R06J0023.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67609,8 +67280,6 @@
       "file": "R06J0028.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67627,8 +67296,6 @@
       "file": "R06J0030.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67636,8 +67303,6 @@
       "file": "R06J0031.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67663,7 +67328,6 @@
       "file": "R06J0036.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67671,8 +67335,6 @@
       "file": "R06J0038.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67680,8 +67342,6 @@
       "file": "R06J0039.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67689,8 +67349,6 @@
       "file": "R06J0041.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67707,8 +67365,6 @@
       "file": "R06J0043.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67716,8 +67372,6 @@
       "file": "R06J0044.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67743,8 +67397,6 @@
       "file": "R06J0047.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67779,8 +67431,6 @@
       "file": "R06J0051.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67788,8 +67438,6 @@
       "file": "R06J0052.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67797,8 +67445,6 @@
       "file": "R06J0053.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -67833,8 +67479,6 @@
       "file": "R06J0059.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -68061,7 +67705,6 @@
       "file": "R07A0027.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -68087,7 +67730,6 @@
       "file": "R07A0030.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -68303,14 +67945,12 @@
     {
       "file": "R07A0071A.xml",
       "issues": [
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
     {
       "file": "R07A0071B.xml",
       "issues": [
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -68614,7 +68254,6 @@
       "file": "R07A0115.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -68720,7 +68359,6 @@
       "file": "R07A0131.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -69024,7 +68662,6 @@
       "file": "R07A0187.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -69101,7 +68738,6 @@
       "file": "R07A0198.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -69750,8 +69386,6 @@
       "file": "R07A0301.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -69950,7 +69584,6 @@
       "file": "R07A0326.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -69958,7 +69591,6 @@
       "file": "R07A0327.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70082,7 +69714,6 @@
       "file": "R07A0346A.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70090,7 +69721,6 @@
       "file": "R07A0346B.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70098,7 +69728,6 @@
       "file": "R07A0346C.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70106,7 +69735,6 @@
       "file": "R07A0346D.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70114,7 +69742,6 @@
       "file": "R07A0346E.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70299,7 +69926,6 @@
       "file": "R07A0370.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -70321,7 +69947,6 @@
       "file": "R07A0377.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -70563,7 +70188,6 @@
       "file": "R07A0416.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -71144,12 +70768,6 @@
       ]
     },
     {
-      "file": "R07A0503.xml",
-      "issues": [
-        "implausible_latitude"
-      ]
-    },
-    {
       "file": "R07A0504.xml",
       "issues": [
         "missing_dataQualityInfo",
@@ -71217,7 +70835,6 @@
       "file": "R07A0514.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -71506,7 +71123,6 @@
       "file": "R07A0581.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -71523,7 +71139,6 @@
       "file": "R07A0587.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -71738,8 +71353,7 @@
     {
       "file": "R07A0619.xml",
       "issues": [
-        "missing_dataQualityInfo",
-        "implausible_longitude"
+        "missing_dataQualityInfo"
       ]
     },
     {
@@ -71747,7 +71361,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "suspicious_old_dateStamp",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -71790,7 +71403,6 @@
       "file": "R07A0628.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -72170,7 +71782,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "suspicious_old_dateStamp",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -72558,7 +72169,6 @@
       "file": "R07A0764.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -72686,7 +72296,6 @@
       "file": "R07A0781.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -72760,7 +72369,6 @@
       "file": "R07A0793.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80407,7 +80015,6 @@
       "file": "R07I0039_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80422,7 +80029,6 @@
       "file": "R07I0042_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80472,7 +80078,6 @@
       "file": "R07I0054_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80559,7 +80164,6 @@
       "file": "R07I0078_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80670,7 +80274,6 @@
       "file": "R07I0102_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80678,7 +80281,6 @@
       "file": "R07I0103_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80699,7 +80301,6 @@
       "file": "R07I0108_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80801,7 +80402,6 @@
       "file": "R07I0142_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80865,7 +80465,6 @@
       "file": "R07I0162_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80894,7 +80493,6 @@
       "file": "R07I0175_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80911,7 +80509,6 @@
       "file": "R07I0182_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80988,7 +80585,6 @@
     {
       "file": "R07I0209_点検済み.xml",
       "issues": [
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -80996,7 +80592,6 @@
       "file": "R07I0210_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81004,7 +80599,6 @@
       "file": "R07I0211_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81088,8 +80682,6 @@
       "file": "R07I0230_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -81199,8 +80791,6 @@
       "file": "R07I0265_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -81285,7 +80875,6 @@
       "file": "R07I0286_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81293,7 +80882,6 @@
       "file": "R07I0287_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81391,7 +80979,6 @@
     {
       "file": "R07I0320_点検済み.xml",
       "issues": [
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81399,7 +80986,6 @@
       "file": "R07I0322_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81601,8 +81187,6 @@
       "file": "R07I0391_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -81638,8 +81222,6 @@
       "file": "R07I0402_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -81647,8 +81229,6 @@
       "file": "R07I0403_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -81684,7 +81264,6 @@
       "file": "R07I0416_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81692,7 +81271,6 @@
       "file": "R07I0418_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81713,7 +81291,6 @@
       "file": "R07I0422_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81742,7 +81319,6 @@
       "file": "R07I0435_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81799,7 +81375,6 @@
       "file": "R07I0455_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81835,7 +81410,6 @@
       "file": "R07I0466_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81884,7 +81458,6 @@
       "file": "R07I0481_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -81943,7 +81516,6 @@
       "file": "R07I0494_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82135,7 +81707,6 @@
       "file": "R07I0582_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82143,7 +81714,6 @@
       "file": "R07I0583_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82423,7 +81993,6 @@
       "file": "R07I0777_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82480,7 +82049,6 @@
       "file": "R07I0802_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82528,7 +82096,6 @@
       "file": "R07I0836_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82571,7 +82138,6 @@
       "file": "R07I0892_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -82579,8 +82145,6 @@
       "file": "R07I0897_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82588,8 +82152,6 @@
       "file": "R07I0902_点検済み.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82638,8 +82200,6 @@
       "file": "R07J0005.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82647,8 +82207,6 @@
       "file": "R07J0006.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82674,8 +82232,6 @@
       "file": "R07J0011.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82683,7 +82239,6 @@
       "file": "R07J0014.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82691,8 +82246,6 @@
       "file": "R07J0016.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82709,8 +82262,6 @@
       "file": "R07J0019.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82763,8 +82314,6 @@
       "file": "R07J0030.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82790,8 +82339,6 @@
       "file": "R07J0036.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82808,8 +82355,6 @@
       "file": "R07J0041.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82817,8 +82362,6 @@
       "file": "R07J0043.xml",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82891,7 +82434,6 @@
       "file": "R05A0095.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82972,7 +82514,6 @@
       "file": "R05A0184.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -82992,12 +82533,6 @@
         "missing_crs",
         "missing_dataQualityInfo",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R05A0235.XML",
-      "issues": [
-        "implausible_latitude"
       ]
     },
     {
@@ -83087,7 +82622,6 @@
       "file": "R05A0382.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -83290,7 +82824,6 @@
       "file": "R05A0627.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_longitude",
         "missing_contact_organisation"
       ]
     },
@@ -84810,13 +84343,6 @@
       ]
     },
     {
-      "file": "R05J0035.XML",
-      "issues": [
-        "implausible_longitude",
-        "implausible_latitude"
-      ]
-    },
-    {
       "file": "R05K0023.XML",
       "issues": [
         "missing_bbox",
@@ -84900,7 +84426,6 @@
       "file": "R06A0171.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -84985,7 +84510,6 @@
       "file": "R06A0265.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -87342,7 +86866,6 @@
       "file": "R07A0411.XML",
       "issues": [
         "missing_dataQualityInfo",
-        "implausible_latitude",
         "missing_contact_organisation"
       ]
     },
@@ -87412,12 +86935,6 @@
       "issues": [
         "missing_dataQualityInfo",
         "missing_contact_organisation"
-      ]
-    },
-    {
-      "file": "R07A0542.XML",
-      "issues": [
-        "implausible_latitude"
       ]
     },
     {

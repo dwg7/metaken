@@ -11,12 +11,15 @@ from typing import Any, Dict
 
 logger = logging.getLogger(__name__)
 
-# Same plausibility range as validate.validate_record's Japan bbox check.
-# Records outside this range are already flagged there as
+# Same plausibility range as validate.validate_record's Japan bbox check --
+# ~122-154°E, ~20-46°N, covering Okinawa (~122-128°E, ~24-27°N) as well as the
+# mainland. An earlier ~130-145°E/30-45°N range silently dropped every
+# Okinawa record's bbox from the map entirely; see HANDOVER.md. Records
+# outside this range are already flagged in validate.py as
 # implausible_longitude/implausible_latitude; excluded here too since a
 # rectangle outside Japan would just be a stray, unreadable mark on this map.
-JAPAN_LON_RANGE = (130, 145)
-JAPAN_LAT_RANGE = (30, 45)
+JAPAN_LON_RANGE = (122, 154)
+JAPAN_LAT_RANGE = (20, 46)
 
 # A handful of records have a bbox spanning several degrees -- e.g. one file's
 # extent covers lon 136.2-139.9, lat 36.4-38.5, roughly half of Honshu, which

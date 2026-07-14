@@ -701,3 +701,37 @@ Root cause was actually two compounding issues:
 Diagnosed by temporarily exposing a `window.__debugLog` array logging every
 map `mousemove` and panel `mouseenter`/`mouseleave` event, which showed the
 exact ordering problem directly rather than guessing from screenshots.
+
+**2026-07-15 (continued) — Okinawa was silently excluded from the map**
+
+User noticed Okinawa (region J) had no visible data on the map and asked
+whether it was a mistake. It was: `JAPAN_LON_RANGE`/`JAPAN_LAT_RANGE` in
+`tiles.py` (and the equivalent inline check in `validate.py`) used
+~130-145°E/30-45°N, tuned to mainland Japan (Honshu/Hokkaido/Kyushu/Shikoku).
+Okinawa's real coordinates (~122-128°E, ~24-27°N) fall entirely outside that
+range, so every J-region bbox was silently dropped by tiles.py's plausibility
+filter and simultaneously flagged as `implausible_longitude`/
+`implausible_latitude` in validate.py -- despite being completely valid data
+(confirmed: R05J0002.xml's bbox is 124.09-124.10°E, 24.22°N, correctly inside
+Yaeyama).
+
+The Region Comparison table (added earlier the same day) actually already
+showed the smoking gun in plain sight -- 沖縄 (J): 120 records, 48% with a
+bbox at all -- but that stat only checks field *presence*, not plausibility,
+so it didn't reveal that the present ones were then being discarded
+downstream. Worth remembering: a completeness stat and a
+plausibility/rendering stat can each look fine in isolation while a bug sits
+between them.
+
+Fixed both files to 122-154°E, 20-46°N (Yonaguni to Minamitorishima,
+Okinotorishima to northern Hokkaido). Re-ran the full pipeline:
+implausible_longitude dropped from 281 to 28, implausible_latitude from 187
+to 17 (spot-checked the remainder -- genuine errors: lon/lat swapped between
+fields, 0.0/0.0 placeholders, values in the single digits where a real
+coordinate was expected). Rebuilt tiles/map; confirmed Okinawa (Naha, Yaeyama
+area) now renders and hovers correctly.
+
+Diagnosed by jumping straight to a known Okinawa coordinate
+(`window.__debugMap.jumpTo(...)`, a temporary debug hook removed again after
+use) rather than trying to navigate/drag the map there, which proved
+unreliable for precise verification.

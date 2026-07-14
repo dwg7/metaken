@@ -48,16 +48,22 @@ def validate_record(record: Dict[str, Any]) -> List[str]:
         except (ValueError, TypeError):
             issues.append("invalid_dateStamp_format")
 
-    # Coordinate plausibility (Japan: ~130-145°E, ~30-45°N)
+    # Coordinate plausibility across all of Japan, not just the mainland:
+    # ~122-154°E, ~20-46°N (Yonaguni to Minamitorishima; Okinotorishima to
+    # northern Hokkaido). An earlier ~130-145°E/30-45°N range was tuned to
+    # Honshu/Hokkaido/Kyushu/Shikoku and silently excluded all of Okinawa
+    # (real coordinates ~122-128°E, ~24-27°N) -- every J-region record with a
+    # bbox was flagged implausible, and tiles.py dropped them from the map
+    # entirely. See HANDOVER.md.
     try:
         west = float(record.get("westBoundLongitude", 0))
         east = float(record.get("eastBoundLongitude", 0))
         south = float(record.get("southBoundLatitude", 0))
         north = float(record.get("northBoundLatitude", 0))
 
-        if not (130 <= west <= 145 and 130 <= east <= 145):
+        if not (122 <= west <= 154 and 122 <= east <= 154):
             issues.append("implausible_longitude")
-        if not (30 <= south <= 45 and 30 <= north <= 45):
+        if not (20 <= south <= 46 and 20 <= north <= 46):
             issues.append("implausible_latitude")
     except (ValueError, TypeError):
         pass
