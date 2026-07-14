@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metaken"
+version = "0.1.0"
+description = "Empirical analysis of Japanese public survey metadata XML"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "CC0"}
+authors = [
+    {name = "GSI Metadata Analysis Project"}
+]
+
+dependencies = [
+    "requests>=2.28.0",
+    "lxml>=4.9.0",
+    "pandas>=1.5.0",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "ruff>=0.0.200",
+    "mypy>=0.990",
+]
+
+[tool.setuptools]
+packages = ["metaken"]
+package-dir = {"" = "src"}
+
+[tool.black]
+line-length = 100
+target-version = ['py39']
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.mypy]
+python_version = "3.9"
+check_untyped_defs = true
+disallow_untyped_defs = false
+warn_unused_ignores = true
