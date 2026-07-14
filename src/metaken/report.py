@@ -46,20 +46,21 @@ def compute_stats(records: List[Dict[str, Any]]) -> Dict[str, int]:
 
 
 # Order matches parse.classify_survey_type's possible outputs.
-SURVEY_TYPE_CATEGORIES = ["基準点測量", "地理空間情報を作る測量", "不明（タイトルなし）"]
+SURVEY_TYPE_CATEGORIES = ["測量メイン", "地図メイン", "不明（記載なし）"]
 
 
 def compute_survey_type_breakdown(records: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
     """Per-category counts and field-completeness, keyed by classify_survey_type's output.
 
-    The category itself is a title-keyword heuristic (see parse.classify_survey_type) —
-    JMP 2.0 has no structured code list for this distinction.
+    The category itself is a title+abstract keyword heuristic (see
+    parse.classify_survey_type) — JMP 2.0 has no structured code list for this
+    distinction.
     """
     breakdown: Dict[str, Dict[str, int]] = {}
     for category in SURVEY_TYPE_CATEGORIES:
         subset = [
             r for r in records
-            if (r.get("surveyTypeCategory") or "不明（タイトルなし）") == category
+            if (r.get("surveyTypeCategory") or "不明（記載なし）") == category
         ]
         breakdown[category] = {
             "count": len(subset),
@@ -110,10 +111,10 @@ def generate_overview_report(
 
         f.write("\n## Survey Type Breakdown\n\n")
         f.write(
-            "JMP 2.0 has no structured field distinguishing control-point surveys "
-            "(基準点測量) from surveys that produce geospatial data products. "
-            "Category is a heuristic keyword match against `title`; see "
-            "`metaken.parse.classify_survey_type`.\n\n"
+            "JMP 2.0 has no structured field distinguishing 測量メイン (surveys whose "
+            "deliverable is measurement itself) from 地図メイン (surveys that produce a "
+            "mapping/imagery data product). Category is a heuristic keyword match "
+            "against `title`+`abstract`; see `metaken.parse.classify_survey_type`.\n\n"
         )
         f.write("| Category | Count | % of total | abstract | bbox | CRS | dataQualityInfo |\n")
         f.write("|---|---|---|---|---|---|---|\n")
@@ -456,9 +457,11 @@ def generate_html_report(
   <section>
     <h2>測量種別ごとの集計</h2>
     <p class="section-note">
-      JMP 2.0 には基準点測量と地理空間情報を作る測量を区別する構造化フィールドが存在しないため、
-      <code>title</code> のキーワード一致による推定分類です（多くの測量は主目的に関わらず補助的に基準点を設置するため、
-      abstract 中の「基準点」への言及ではなく title のみで判定しています）。
+      JMP 2.0 には「測量メイン」（測量そのものが成果物 — 基準点測量・用地測量・路線測量・境界確定測量等）と
+      「地図メイン」（地図・空間情報プロダクトが成果物）を区別する構造化フィールドが存在しないため、
+      <code>title</code>＋<code>abstract</code> 中に都市計画図・地形図・ドローン・点群・オルソ等の
+      明示的な地図プロダクト用語があるものだけを「地図メイン」とし、それ以外は「測量メイン」とする
+      キーワード判定による推定分類です。
     </p>
     <div class="bars">{_bar_rows(survey_count_items, total, '--bar-color')}</div>
     <table class="data-table">

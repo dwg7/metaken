@@ -501,3 +501,43 @@ Result: 1,060 基準点測量 (10%) vs. 8,745 地理空間情報を作る測量 
 基準点測量 vs. 6% for 地理空間情報を作る測量 — a first concrete data point for the
 project's central cost-benefit question, though from one heuristic split and worth
 re-checking once a cleaner classification signal is found.
+
+**2026-07-14 (same day, continued) — survey-type category revised after user review**
+
+The user's own field intuition put the true split at roughly **7:3**, the opposite
+of the 10:79 title-only result above. Rather than assume either number, walked
+through several classification passes against the actual title/abstract text with
+the user before settling on a definition, since "measurement vs. mapping" turned
+out to be genuinely ambiguous from the data alone:
+
+1. Title-only match on 基準点測量-type phrases → 10% control-point. Too narrow:
+   most public-survey titles name the parent project (e.g. "オサツナイ川外砂防工事
+   地形調査"), not the specific advisory-registered task, so this undercounted.
+2. Matched the structured `作業内容は…です` clause in the abstract (present in 64%
+   of records) instead, treating a short clause as "pure control-point work" →
+   32:68. Closer, but still inverted from the user's expectation.
+3. User's correction: **the category is about what the survey's deliverable is,
+   not whether 基準点 is mentioned at all.** A survey that sets control points as
+   one step toward an application (boundary work, road ledger correction, drainage
+   management, etc.) still counts as the survey-primary category; only an
+   *explicit* mapping/imagery-product term marks the other category. Renamed the
+   categories accordingly: **測量メイン** (survey-primary — includes 基準点測量, 用地
+   測量, 路線測量, 境界確定測量, 道路台帳補正, and anything else without an explicit
+   map-product term) and **地図メイン** (map-primary — explicitly names a mapping or
+   imagery product: 都市計画図, 都市計画基本図, 地形図, 地形測量, 地形調査, ドローン,
+   無人航空機, UAV, 点群, レーザ, 空中写真, オルソ, 写真測量, 写真地図, 数値地形図,
+   森林基本図).
+
+Final numbers (`metaken.parse.SURVEY_TYPE_MAP_PRODUCT`, matched against
+title+abstract combined): **測量メイン 7,549 (68% of all records, 77% of
+classified) : 地図メイン 2,256 (20% / 23%)** — matches the user's 7:3 expectation.
+`dataQualityInfo` presence is 3% for 測量メイン vs. 14% for 地図メイン (~5x), a
+sharper version of the same cost-benefit signal as the superseded split above.
+
+This category boundary was fitted to one domain expert's expectation using a
+fairly small, hand-picked keyword list — it has not been validated against a
+labeled sample, and the "explicit map-product term" rule will misclassify records
+that describe a mapping deliverable without using one of the listed words (e.g.
+"砂防基盤図作成業務" — "基盤図" isn't in the keyword list, so it fell into 測量メイン
+in a spot-check). Worth a proper precision/recall check against manually-labeled
+examples before leaning on this split for any published conclusion.

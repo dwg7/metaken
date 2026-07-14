@@ -174,7 +174,7 @@
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 12:51 UTC</p>
+  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 13:06 UTC</p>
 
   <section>
     <h2>概要</h2>
@@ -263,35 +263,37 @@
   <section>
     <h2>測量種別ごとの集計</h2>
     <p class="section-note">
-      JMP 2.0 には基準点測量と地理空間情報を作る測量を区別する構造化フィールドが存在しないため、
-      <code>title</code> のキーワード一致による推定分類です（多くの測量は主目的に関わらず補助的に基準点を設置するため、
-      abstract 中の「基準点」への言及ではなく title のみで判定しています）。
+      JMP 2.0 には「測量メイン」（測量そのものが成果物 — 基準点測量・用地測量・路線測量・境界確定測量等）と
+      「地図メイン」（地図・空間情報プロダクトが成果物）を区別する構造化フィールドが存在しないため、
+      <code>title</code>＋<code>abstract</code> 中に都市計画図・地形図・ドローン・点群・オルソ等の
+      明示的な地図プロダクト用語があるものだけを「地図メイン」とし、それ以外は「測量メイン」とする
+      キーワード判定による推定分類です。
     </p>
     <div class="bars">
         <div class="bar-row">
-          <div class="bar-label">基準点測量</div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width: 12.1%; background: var(--bar-color);"></div>
-          </div>
-          <div class="bar-value">1,060 <span class="bar-pct">(10%)</span></div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">地理空間情報を作る測量</div>
+          <div class="bar-label">測量メイン</div>
           <div class="bar-track">
             <div class="bar-fill" style="width: 100.0%; background: var(--bar-color);"></div>
           </div>
-          <div class="bar-value">8,745 <span class="bar-pct">(79%)</span></div>
+          <div class="bar-value">7,549 <span class="bar-pct">(68%)</span></div>
         </div>
         <div class="bar-row">
-          <div class="bar-label">不明（タイトルなし）</div>
+          <div class="bar-label">地図メイン</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 14.3%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 29.9%; background: var(--bar-color);"></div>
+          </div>
+          <div class="bar-value">2,256 <span class="bar-pct">(20%)</span></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">不明（記載なし）</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 16.6%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">1,254 <span class="bar-pct">(11%)</span></div>
         </div></div>
     <table class="data-table">
       <thead><tr><th>種別</th><th>件数</th><th>abstract</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th></tr></thead>
-      <tbody><tr><td>基準点測量</td><td>1,060</td><td>100%</td><td>63%</td><td>0%</td><td>2%</td></tr><tr><td>地理空間情報を作る測量</td><td>8,745</td><td>100%</td><td>66%</td><td>0%</td><td>6%</td></tr><tr><td>不明（タイトルなし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+      <tbody><tr><td>測量メイン</td><td>7,549</td><td>100%</td><td>70%</td><td>0%</td><td>3%</td></tr><tr><td>地図メイン</td><td>2,256</td><td>100%</td><td>53%</td><td>0%</td><td>14%</td></tr><tr><td>不明（記載なし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
     </table>
   </section>
 
