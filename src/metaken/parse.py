@@ -25,15 +25,99 @@ GSI_NS = "http://zgate.gsi.go.jp/ch/jmp/"
 # defaults to 測量メイン. This ordering and the category split (roughly 3:1 in the
 # full R05-R07 dataset) were calibrated against a domain expert's expectation for
 # the true 測量メイン:地図メイン ratio in public survey work -- see HANDOVER.md.
+#
+# 航空写真 added after the R05-R07 sample validation against 公共測量実施情報
+# (HANDOVER.md "sample validation against 公共測量実施情報"): record F0532's
+# title "高槻市デジタル航空写真撮影業務" was misclassified as 測量メイン because
+# it uses 航空写真, not the only aerial-photo synonym this list had (空中写真).
+# The other false negatives found in that 20-record sample (数値図化, 数値撮影,
+# 数値地形図データの作成 as the *official* 測量種別, not necessarily verbatim in
+# the title/abstract text) are deliberately left unfixed here -- adding keywords
+# from an official category label without seeing the actual source text would be
+# guessing, not the same kind of concrete fix as this one.
 SURVEY_TYPE_MAP_PRODUCT = re.compile(
     r"都市計画図|都市計画基本図|地形図|地形測量|地形調査|ドローン|無人航空機|UAV|"
-    r"点群|レーザ|空中写真|オルソ|写真測量|写真地図|数値地形図|森林基本図"
+    r"点群|レーザ|空中写真|航空写真|オルソ|写真測量|写真地図|数値地形図|森林基本図"
 )
 
 # Filenames are normally {fiscal_year}{region}{seq}, e.g. "R07A0001.xml", but a
 # few files in the wild don't follow the convention (e.g. a Japanese-prefixed
 # name). Search for the pattern anywhere rather than slicing blindly by position.
 FILENAME_YEAR_REGION = re.compile(r"(R\d{2}|H\d{2})([A-K])")
+
+# Official JMP2.0 code lists (codeListValue -> label). Unlike SURVEY_TYPE_MAP_PRODUCT
+# above, these are fixed ISO 19115-derived enumerations, not a heuristic -- verified
+# against GSI's own JMP2.0 spec (https://www.gsi.go.jp/common/000259949.pdf), Appendix
+# C XML Schema (enumeration order) cross-checked with the code tables in
+# §5.1 CI_DateTypeCode, §5.2 CI_RoleCode, §5.7 MD_ScopeCode, §5.9 MD_TopicCategoryCode.
+TOPIC_CATEGORY_CODES: Dict[str, str] = {
+    "001": "農業 (farming)",
+    "002": "生物相 (biota)",
+    "003": "境界 (boundaries)",
+    "004": "気象 (climatologyMeteorologyAtmosphere)",
+    "005": "経済 (economy)",
+    "006": "高さ (elevation)",
+    "007": "環境 (environment)",
+    "008": "地球科学の情報 (geoscientificInformation)",
+    "009": "健康 (health)",
+    "010": "全地球基本地図画像 (imageryBaseMapsEarthCover)",
+    "011": "軍事情報 (intelligenceMilitary)",
+    "012": "陸水 (inlandWaters)",
+    "013": "位置 (location)",
+    "014": "大洋 (oceans)",
+    "015": "土地台帳計画 (planningCadastre)",
+    "016": "社会 (society)",
+    "017": "構造物 (structure)",
+    "018": "運輸 (transportation)",
+    "019": "公共事業・通信 (utilitiesCommunication)",
+    "020": "その他の主題 (N/A)",
+}
+
+HIERARCHY_LEVEL_CODES: Dict[str, str] = {  # MD_ScopeCode
+    "001": "属性 (attribute)",
+    "002": "属性型 (attributeType)",
+    "003": "収集用機器 (collectionHardware)",
+    "004": "収集作業 (collectionSession)",
+    "005": "データ集合 (dataset)",
+    "006": "シリーズ (series)",
+    "007": "非地理データ集合 (nonGeographicDataset)",
+    "008": "次元グループ (dimensionGroup)",
+    "009": "地物 (feature)",
+    "010": "地物型 (featureType)",
+    "011": "特質の型 (propertyType)",
+    "012": "現場作業 (fieldSession)",
+    "013": "ソフトウェア (software)",
+    "014": "サービス (service)",
+    "015": "モデル (model)",
+    "016": "タイル (tile)",
+}
+
+DATE_TYPE_CODES: Dict[str, str] = {  # CI_DateTypeCode
+    "001": "作成日 (creation)",
+    "002": "刊行日 (publication)",
+    "003": "改訂日 (revision)",
+}
+
+ROLE_CODES: Dict[str, str] = {  # CI_RoleCode
+    "001": "情報資源提供者 (resourceProvider)",
+    "002": "管理者 (custodian)",
+    "003": "所有者 (owner)",
+    "004": "利用者 (user)",
+    "005": "配布者 (distributor)",
+    "006": "創作者 (originator)",
+    "007": "問合せ先 (pointOfContact)",
+    "008": "主要な調査担当者 (principalInvestigator)",
+    "009": "処理担当者 (processor)",
+    "010": "刊行者 (publisher)",
+    "011": "著作者 (author)",
+}
+
+
+def resolve_codelist(code: str, table: Dict[str, str]) -> str:
+    """Resolve a raw JMP2.0 codeListValue to its label. Returns the raw code
+    unchanged if unresolved (blank, or a malformed value such as the one stray
+    non-zero-padded "1" observed in dateType)."""
+    return table.get(code, code)
 
 
 def classify_crs_family(crs_code: str) -> str:
@@ -123,10 +207,12 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
 
         date_type_elem = root.find(f".//{{{ns}}}identificationInfo//{{{ns}}}citation//{{{ns}}}date//{{{ns}}}dateType")
         record["dateType"] = (date_type_elem.text or "") if date_type_elem is not None else ""
+        record["dateType_label"] = resolve_codelist(record["dateType"], DATE_TYPE_CODES)
 
         # Topic category, character set, language, hierarchy level
         topic_elem = root.find(f".//{{{ns}}}topicCategory")
         record["topicCategory"] = (topic_elem.text or "") if topic_elem is not None else ""
+        record["topicCategory_label"] = resolve_codelist(record["topicCategory"], TOPIC_CATEGORY_CODES)
 
         char_set_elem = root.find(f".//{{{ns}}}characterSet")
         record["characterSet"] = (char_set_elem.text or "") if char_set_elem is not None else ""
@@ -136,6 +222,7 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
 
         hier_level_elem = root.find(f".//{{{ns}}}hierarchyLevel")
         record["hierarchyLevel"] = (hier_level_elem.text or "") if hier_level_elem is not None else ""
+        record["hierarchyLevel_label"] = resolve_codelist(record["hierarchyLevel"], HIERARCHY_LEVEL_CODES)
 
         # Contact information
         contact_elem = root.find(f".//{{{ns}}}pointOfContact//{{{ns}}}organisationName")
@@ -143,6 +230,7 @@ def parse_xml_file(xml_path: Path, ns: str = GSI_NS) -> Dict[str, Any]:
 
         contact_role_elem = root.find(f".//{{{ns}}}pointOfContact//{{{ns}}}role")
         record["contactRole"] = (contact_role_elem.text or "") if contact_role_elem is not None else ""
+        record["contactRole_label"] = resolve_codelist(record["contactRole"], ROLE_CODES)
 
         # Bounding box
         west_elem = root.find(f".//{{{ns}}}westBoundLongitude")

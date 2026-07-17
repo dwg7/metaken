@@ -174,7 +174,7 @@
 <main>
   <h1>metaken</h1>
   <p class="subtitle">公共測量成果等メタデータ XML の実態調査 — 国土地理院公開データの経験的分析</p>
-  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-14 22:12 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
+  <p class="meta">対象: R05, R06, R07 / A, B, C, D, E, F, G, H, I, J, K　·　生成日時: 2026-07-17 14:16 UTC　·　<a href="map/">測量範囲マップを見る →</a></p>
 
   <section>
     <h2>概要</h2>
@@ -277,7 +277,7 @@
     <p class="section-note">地方測量部・支所（region_code）ごとの充足率と測量メイン比率です。</p>
     <table class="data-table">
       <thead><tr><th>地域</th><th>件数</th><th>title</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th><th>測量メイン</th></tr></thead>
-      <tbody><tr><td>北海道 (A)</td><td>2,223</td><td>99%</td><td>77%</td><td>75%</td><td>3%</td><td>83%</td></tr><tr><td>東北 (B)</td><td>1,176</td><td>57%</td><td>35%</td><td>34%</td><td>11%</td><td>37%</td></tr><tr><td>関東 (C)</td><td>475</td><td>98%</td><td>45%</td><td>44%</td><td>7%</td><td>63%</td></tr><tr><td>北陸 (D)</td><td>948</td><td>100%</td><td>65%</td><td>62%</td><td>1%</td><td>75%</td></tr><tr><td>中部 (E)</td><td>1,087</td><td>33%</td><td>12%</td><td>12%</td><td>1%</td><td>24%</td></tr><tr><td>近畿 (F)</td><td>1,447</td><td>100%</td><td>61%</td><td>60%</td><td>4%</td><td>72%</td></tr><tr><td>中国 (G)</td><td>802</td><td>99%</td><td>52%</td><td>49%</td><td>4%</td><td>81%</td></tr><tr><td>四国 (H)</td><td>870</td><td>98%</td><td>47%</td><td>45%</td><td>1%</td><td>83%</td></tr><tr><td>九州 (I)</td><td>1,793</td><td>99%</td><td>84%</td><td>83%</td><td>5%</td><td>79%</td></tr><tr><td>沖縄 (J)</td><td>120</td><td>100%</td><td>48%</td><td>48%</td><td>0%</td><td>94%</td></tr><tr><td>企画部 (K)</td><td>118</td><td>100%</td><td>86%</td><td>85%</td><td>66%</td><td>14%</td></tr></tbody>
+      <tbody><tr><td>北海道 (A)</td><td>2,223</td><td>99%</td><td>77%</td><td>75%</td><td>3%</td><td>82%</td></tr><tr><td>東北 (B)</td><td>1,176</td><td>57%</td><td>35%</td><td>34%</td><td>11%</td><td>37%</td></tr><tr><td>関東 (C)</td><td>475</td><td>98%</td><td>45%</td><td>44%</td><td>7%</td><td>50%</td></tr><tr><td>北陸 (D)</td><td>948</td><td>100%</td><td>65%</td><td>62%</td><td>1%</td><td>75%</td></tr><tr><td>中部 (E)</td><td>1,087</td><td>33%</td><td>12%</td><td>12%</td><td>1%</td><td>23%</td></tr><tr><td>近畿 (F)</td><td>1,447</td><td>100%</td><td>61%</td><td>60%</td><td>4%</td><td>71%</td></tr><tr><td>中国 (G)</td><td>802</td><td>99%</td><td>52%</td><td>49%</td><td>4%</td><td>81%</td></tr><tr><td>四国 (H)</td><td>870</td><td>98%</td><td>47%</td><td>45%</td><td>1%</td><td>83%</td></tr><tr><td>九州 (I)</td><td>1,793</td><td>99%</td><td>84%</td><td>83%</td><td>5%</td><td>78%</td></tr><tr><td>沖縄 (J)</td><td>120</td><td>100%</td><td>48%</td><td>48%</td><td>0%</td><td>94%</td></tr><tr><td>企画部 (K)</td><td>118</td><td>100%</td><td>86%</td><td>85%</td><td>66%</td><td>14%</td></tr></tbody>
     </table>
   </section>
 
@@ -333,6 +333,53 @@
   </section>
 
   <section>
+    <h2>コードリストの分布</h2>
+    <p class="section-note">
+      topicCategory・hierarchyLevel・dateType・role は元の XML では ISO/JMP2.0 の
+      codeListValue 番号（例: <code>013</code>）のまま格納されており、GSI 自身の
+      エクスポートではラベル化されていません。以下は
+      <a href="https://www.gsi.go.jp/common/000259949.pdf">JMP2.0 仕様書</a>
+      （§5.1/5.2/5.7/5.9）のコード表に基づいて解決した結果です。
+    </p>
+    
+    <h3 style="font-size:15px;margin:20px 0 4px;">topicCategory (MD_TopicCategoryCode)
+      <span class="section-note" style="display:inline;">
+        （値なし: 1,335 件 / 12%、7 種類の値あり）
+      </span></h3>
+    <table class="data-table">
+      <thead><tr><th>値</th><th>件数</th><th>割合</th></tr></thead>
+      <tbody><tr><td>位置 (location)</td><td>9,159</td><td>82%</td></tr><tr><td>高さ (elevation)</td><td>255</td><td>2%</td></tr><tr><td>境界 (boundaries)</td><td>219</td><td>1%</td></tr><tr><td>農業 (farming)</td><td>49</td><td>0%</td></tr><tr><td>全地球基本地図画像 (imageryBaseMapsEarthCover)</td><td>27</td><td>0%</td></tr><tr><td>構造物 (structure)</td><td>13</td><td>0%</td></tr><tr><td>公共事業・通信 (utilitiesCommunication)</td><td>2</td><td>0%</td></tr></tbody>
+    </table>
+    
+    <h3 style="font-size:15px;margin:20px 0 4px;">hierarchyLevel (MD_ScopeCode)
+      <span class="section-note" style="display:inline;">
+        （値なし: 1,418 件 / 12%、6 種類の値あり）
+      </span></h3>
+    <table class="data-table">
+      <thead><tr><th>値</th><th>件数</th><th>割合</th></tr></thead>
+      <tbody><tr><td>データ集合 (dataset)</td><td>9,433</td><td>85%</td></tr><tr><td>収集作業 (collectionSession)</td><td>147</td><td>1%</td></tr><tr><td>属性 (attribute)</td><td>33</td><td>0%</td></tr><tr><td>属性型 (attributeType)</td><td>18</td><td>0%</td></tr><tr><td>収集用機器 (collectionHardware)</td><td>9</td><td>0%</td></tr><tr><td>シリーズ (series)</td><td>1</td><td>0%</td></tr></tbody>
+    </table>
+    
+    <h3 style="font-size:15px;margin:20px 0 4px;">dateType (CI_DateTypeCode)
+      <span class="section-note" style="display:inline;">
+        （値なし: 1,255 件 / 11%、4 種類の値あり）
+      </span></h3>
+    <table class="data-table">
+      <thead><tr><th>値</th><th>件数</th><th>割合</th></tr></thead>
+      <tbody><tr><td>作成日 (creation)</td><td>9,750</td><td>88%</td></tr><tr><td>改訂日 (revision)</td><td>35</td><td>0%</td></tr><tr><td>刊行日 (publication)</td><td>18</td><td>0%</td></tr><tr><td>1</td><td>1</td><td>0%</td></tr></tbody>
+    </table>
+    
+    <h3 style="font-size:15px;margin:20px 0 4px;">role (CI_RoleCode)
+      <span class="section-note" style="display:inline;">
+        （値なし: 10,585 件 / 95%、9 種類の値あり）
+      </span></h3>
+    <table class="data-table">
+      <thead><tr><th>値</th><th>件数</th><th>割合</th></tr></thead>
+      <tbody><tr><td>創作者 (originator)</td><td>259</td><td>2%</td></tr><tr><td>刊行者 (publisher)</td><td>85</td><td>0%</td></tr><tr><td>管理者 (custodian)</td><td>72</td><td>0%</td></tr><tr><td>処理担当者 (processor)</td><td>28</td><td>0%</td></tr><tr><td>問合せ先 (pointOfContact)</td><td>15</td><td>0%</td></tr><tr><td>主要な調査担当者 (principalInvestigator)</td><td>8</td><td>0%</td></tr><tr><td>所有者 (owner)</td><td>4</td><td>0%</td></tr><tr><td>利用者 (user)</td><td>2</td><td>0%</td></tr></tbody>
+    </table>
+  </section>
+
+  <section>
     <h2>測量種別ごとの集計</h2>
     <p class="section-note">
       JMP 2.0 には「測量メイン」（測量そのものが成果物 — 基準点測量・用地測量・路線測量・境界確定測量等）と
@@ -347,25 +394,25 @@
           <div class="bar-track">
             <div class="bar-fill" style="width: 100.0%; background: var(--bar-color);"></div>
           </div>
-          <div class="bar-value">7,549 <span class="bar-pct">(68%)</span></div>
+          <div class="bar-value">7,443 <span class="bar-pct">(67%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">地図メイン</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 29.9%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 31.7%; background: var(--bar-color);"></div>
           </div>
-          <div class="bar-value">2,256 <span class="bar-pct">(20%)</span></div>
+          <div class="bar-value">2,362 <span class="bar-pct">(21%)</span></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">不明（記載なし）</div>
           <div class="bar-track">
-            <div class="bar-fill" style="width: 16.6%; background: var(--bar-color);"></div>
+            <div class="bar-fill" style="width: 16.8%; background: var(--bar-color);"></div>
           </div>
           <div class="bar-value">1,254 <span class="bar-pct">(11%)</span></div>
         </div></div>
     <table class="data-table">
       <thead><tr><th>種別</th><th>件数</th><th>abstract</th><th>bbox</th><th>CRS</th><th>dataQualityInfo</th></tr></thead>
-      <tbody><tr><td>測量メイン</td><td>7,549</td><td>100%</td><td>70%</td><td>68%</td><td>3%</td></tr><tr><td>地図メイン</td><td>2,256</td><td>100%</td><td>53%</td><td>52%</td><td>14%</td></tr><tr><td>不明（記載なし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+      <tbody><tr><td>測量メイン</td><td>7,443</td><td>100%</td><td>70%</td><td>68%</td><td>3%</td></tr><tr><td>地図メイン</td><td>2,362</td><td>100%</td><td>53%</td><td>51%</td><td>14%</td></tr><tr><td>不明（記載なし）</td><td>1,254</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
     </table>
   </section>
 

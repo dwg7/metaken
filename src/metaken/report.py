@@ -161,6 +161,26 @@ def compute_quality_analysis(records: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
+def compute_codelist_distribution(records: List[Dict[str, Any]], label_field: str, top_n: int = 8) -> Dict[str, Any]:
+    """Frequency of a resolved codelist label field (see parse.py's
+    TOPIC_CATEGORY_CODES/HIERARCHY_LEVEL_CODES/DATE_TYPE_CODES/ROLE_CODES).
+
+    Blank values (the field was absent in the source XML) are counted
+    separately from resolved labels rather than folded into "top" -- for
+    contactRole in particular, most records simply have no role at all
+    (distinct from having an unresolved/unexpected code).
+    """
+    non_blank = [r.get(label_field) for r in records if r.get(label_field)]
+    blank_count = len(records) - len(non_blank)
+    counts = Counter(non_blank)
+    return {
+        "total": len(records) or 1,
+        "blank": blank_count,
+        "distinct": len(counts),
+        "top": counts.most_common(top_n),
+    }
+
+
 CRS_FAMILIES = ["JGD2024", "JGD2011", "JGD2000", "TD（旧日本測地系）", "その他/不明"]
 
 
@@ -193,6 +213,15 @@ def generate_overview_report(
     region_breakdown = compute_region_breakdown(records)
     zero_byte_matrix, zero_byte_years = compute_zero_byte_matrix(records)
     quality_analysis = compute_quality_analysis(records)
+    codelist_fields = [
+        ("topicCategory_label", "topicCategory (MD_TopicCategoryCode)"),
+        ("hierarchyLevel_label", "hierarchyLevel (MD_ScopeCode)"),
+        ("dateType_label", "dateType (CI_DateTypeCode)"),
+        ("contactRole_label", "role (CI_RoleCode)"),
+    ]
+    codelist_distributions = {
+        field: compute_codelist_distribution(records, field) for field, _ in codelist_fields
+    }
 
     # Generate report
     output_file.parent.mkdir(parents=True, exist_ok=True)
@@ -296,6 +325,25 @@ def generate_overview_report(
             for text, count in fa["top"]:
                 short = text if len(text) <= 70 else text[:70] + "..."
                 f.write(f"- {count:,}× `{short}`\n")
+            f.write("\n")
+
+        f.write("\n## Code List Distributions\n\n")
+        f.write(
+            "topicCategory, hierarchyLevel, dateType, and role are raw ISO/JMP2.0 "
+            "codeListValue numbers in the source XML (e.g. `013`), not resolved to "
+            "labels by GSI's own export -- resolved here against the code tables in "
+            "JMP2.0's own spec (https://www.gsi.go.jp/common/000259949.pdf, "
+            "§5.1/5.2/5.7/5.9).\n\n"
+        )
+        for field, label in codelist_fields:
+            dist = codelist_distributions[field]
+            f.write(f"### {label}\n\n")
+            f.write(
+                f"{dist['distinct']} distinct value(s); {dist['blank']:,} of {dist['total']:,} "
+                f"records ({100*dist['blank']//dist['total']}%) have no value at all.\n\n"
+            )
+            for value, count in dist["top"]:
+                f.write(f"- {count:,} ({100*count//dist['total']}%) `{value}`\n")
             f.write("\n")
 
         if validation_results:
@@ -449,6 +497,32 @@ def generate_html_report(
     )
 
     quality_analysis = compute_quality_analysis(records)
+
+    codelist_fields = [
+        ("topicCategory_label", "topicCategory (MD_TopicCategoryCode)"),
+        ("hierarchyLevel_label", "hierarchyLevel (MD_ScopeCode)"),
+        ("dateType_label", "dateType (CI_DateTypeCode)"),
+        ("contactRole_label", "role (CI_RoleCode)"),
+    ]
+    codelist_distributions = {
+        field: compute_codelist_distribution(records, field) for field, _ in codelist_fields
+    }
+
+    def _codelist_section(field_key: str, label: str) -> str:
+        dist = codelist_distributions[field_key]
+        rows = "".join(
+            f"<tr><td>{value}</td><td>{count:,}</td><td>{100*count//dist['total']}%</td></tr>"
+            for value, count in dist["top"]
+        )
+        return f"""
+    <h3 style="font-size:15px;margin:20px 0 4px;">{label}
+      <span class="section-note" style="display:inline;">
+        （値なし: {dist['blank']:,} 件 / {100*dist['blank']//dist['total']}%、{dist['distinct']} 種類の値あり）
+      </span></h3>
+    <table class="data-table">
+      <thead><tr><th>値</th><th>件数</th><th>割合</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>"""
 
     def _quality_field_rows(field_key: str) -> str:
         fa = quality_analysis[field_key]
@@ -738,6 +812,21 @@ def generate_html_report(
     <table class="data-table">
       <tbody>{_quality_field_rows('explanation')}</tbody>
     </table>
+  </section>
+
+  <section>
+    <h2>コードリストの分布</h2>
+    <p class="section-note">
+      topicCategory・hierarchyLevel・dateType・role は元の XML では ISO/JMP2.0 の
+      codeListValue 番号（例: <code>013</code>）のまま格納されており、GSI 自身の
+      エクスポートではラベル化されていません。以下は
+      <a href="https://www.gsi.go.jp/common/000259949.pdf">JMP2.0 仕様書</a>
+      （§5.1/5.2/5.7/5.9）のコード表に基づいて解決した結果です。
+    </p>
+    {_codelist_section('topicCategory_label', 'topicCategory (MD_TopicCategoryCode)')}
+    {_codelist_section('hierarchyLevel_label', 'hierarchyLevel (MD_ScopeCode)')}
+    {_codelist_section('dateType_label', 'dateType (CI_DateTypeCode)')}
+    {_codelist_section('contactRole_label', 'role (CI_RoleCode)')}
   </section>
 
   <section>
